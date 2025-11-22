@@ -20,6 +20,7 @@ build/
 *.swp
 *.swo
 *~
+.cursor/
 
 # OS
 .DS_Store
@@ -43,5 +44,39 @@ temp/
 *.pem
 *.private
 
+# IP Protection - DO NOT COMMIT
+patents/
+*.patent
+*_patent_*
+PATENT_*
+
+# Research files - DO NOT COMMIT
+*research*
+*osint*
+*apify*
+*competitor*
+*analysis*
+
+# Location files
+*location*
+*LOCATION*
+
+# Cursor-specific files
+.cursor/
+*.cursor
+cursor-*
+
+# Source code with IP (keep only demo/public code)
+src/quantum-crypto/
+src/hedera/HederaClient.js
+src/ai-agents/QuantumAIAgent.js
+src/nft-marketplace/QuantumNFTMarketplace.js
+contracts/QuantumBridge.sol
+
 # Deployment reports (may contain sensitive data)
 DEPLOYMENT_REPORT.json
+
+# Submission research outputs
+submission/osint-output/
+submission/apify-output/
+submission/gamma-output/
