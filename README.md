@@ -1,3 +1,9 @@
+<!-- TAURUS AI Badges -->
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/Taurus-Ai-Corp?style=flat-square&logo=github&color=EA4AAA)](https://github.com/sponsors/Taurus-Ai-Corp)
+[![License](https://img.shields.io/badge/License-FSL%201.1-blue?style=flat-square)](LICENSE)
+[![Website](https://img.shields.io/badge/Website-taurusai.io-green?style=flat-square)](https://taurusai.io)
+<!-- /TAURUS AI Badges -->
+
 # 🛡️ QuantumShield - The Trust Layer for Post-Quantum Digital Economy
 
 [![Hedera Hackathon 2025](https://img.shields.io/badge/Hedera%20Hackathon-2025-purple)](https://hackathon.stackup.dev/web/events/hedera-hello-future-ascension-hackathon-2025)
@@ -466,3 +472,19 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
   <h3>🛡️ Securing Tomorrow's Digital Assets Today</h3>
   <p>Built with ❤️ for Hedera Ascension Hackathon 2025</p>
 </div>
+
+
+---
+
+## 💖 Support This Project
+
+If you find this project useful, please consider sponsoring:
+
+[![Sponsor TAURUS AI](https://img.shields.io/badge/Sponsor-TAURUS%20AI-EA4AAA?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/Taurus-Ai-Corp)
+
+Your sponsorship helps us maintain and improve our open-source projects.
+
+---
+
+**TAURUS AI Corp** | [Website](https://taurusai.io) | [GitHub](https://github.com/Taurus-Ai-Corp) | [Contact](mailto:admin@taurusai.io)
+
