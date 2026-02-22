@@ -39,6 +39,10 @@ temp/
 .vercel
 .netlify
 
+# Git worktrees
+.worktrees/
+worktrees/
+
 # Quantum keys (sensitive)
 *.key
 *.pem
