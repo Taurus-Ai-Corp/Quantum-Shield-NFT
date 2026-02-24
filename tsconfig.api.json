@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "outDir": "./dist/api",
+    "rootDir": "./src",
+    "types": ["node", "jest"],
+    "lib": ["ES2022"]
+  },
+  "include": [
+    "src/api/**/*.ts",
+    "src/services/**/*.ts",
+    "src/quantum-crypto/**/*.ts",
+    "src/hedera/**/*.ts",
+    "src/nft-marketplace/**/*.ts",
+    "src/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "web",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

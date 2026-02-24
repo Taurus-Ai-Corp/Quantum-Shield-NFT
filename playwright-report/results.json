@@ -1,0 +1,762 @@
+{
+  "config": {
+    "configFile": "/Users/taurus_ai/Desktop/TAURUS_AI_SAAS/products/Quantum-Shield-NFT/.worktrees/feature/fullstack-web3-saas/playwright.config.ts",
+    "rootDir": "/Users/taurus_ai/Desktop/TAURUS_AI_SAAS/products/Quantum-Shield-NFT/.worktrees/feature/fullstack-web3-saas/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/taurus_ai/Desktop/TAURUS_AI_SAAS/products/Quantum-Shield-NFT/.worktrees/feature/fullstack-web3-saas/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/taurus_ai/Desktop/TAURUS_AI_SAAS/products/Quantum-Shield-NFT/.worktrees/feature/fullstack-web3-saas/tests/e2e",
+        "testIgnore": [
+          "**/node_modules/**",
+          "**/dist/**",
+          "**/build/**"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-report/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "playwright-report/results.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 7,
+    "webServer": {
+      "command": "cd web && npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000,
+      "stdout": "ignore",
+      "stderr": "pipe"
+    }
+  },
+  "suites": [
+    {
+      "title": "01-landing.spec.ts",
+      "file": "01-landing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Landing Page",
+          "file": "01-landing.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load landing page successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-6bb9d242c235135e7642",
+              "file": "01-landing.spec.ts",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "should display hero section with CTA",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-bd5816c10153fde82326",
+              "file": "01-landing.spec.ts",
+              "line": 25,
+              "column": 3
+            },
+            {
+              "title": "should display key features section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-b382793c72b5403bceff",
+              "file": "01-landing.spec.ts",
+              "line": 36,
+              "column": 3
+            },
+            {
+              "title": "should have working navigation links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-e0cd134479baf3c403f1",
+              "file": "01-landing.spec.ts",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should be responsive on mobile viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-2e7b264075283db368ba",
+              "file": "01-landing.spec.ts",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should have proper meta tags for SEO",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-90c6921d58840648f7e8",
+              "file": "01-landing.spec.ts",
+              "line": 75,
+              "column": 3
+            },
+            {
+              "title": "should load without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-64e29f752e747f2af70a",
+              "file": "01-landing.spec.ts",
+              "line": 86,
+              "column": 3
+            },
+            {
+              "title": "should have accessibility landmarks",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-ecef8ef0702b85411aa6",
+              "file": "01-landing.spec.ts",
+              "line": 108,
+              "column": 3
+            },
+            {
+              "title": "should display footer with links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-98a6f446e805478a8421",
+              "file": "01-landing.spec.ts",
+              "line": 117,
+              "column": 3
+            },
+            {
+              "title": "should handle navigation to dashboard route",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c6d9a8e5b4c3be54e58a-af54bf75d865c2466774",
+              "file": "01-landing.spec.ts",
+              "line": 130,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "02-wallet-connection.spec.ts",
+      "file": "02-wallet-connection.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Wallet Connection",
+          "file": "02-wallet-connection.spec.ts",
+          "line": 15,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display connect wallet button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-b1443a92de65e86902e0",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 21,
+              "column": 3
+            },
+            {
+              "title": "should show wallet connection modal on button click",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-ec6def5c25c817975406",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 30,
+              "column": 3
+            },
+            {
+              "title": "should close wallet modal on cancel",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-55a5b04a462e77e52bd8",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "should display wallet address after successful connection",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-d8437917add4e8664535",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "should show disconnect option when wallet is connected",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-cca0527d776c9ada3b32",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 86,
+              "column": 3
+            },
+            {
+              "title": "should handle network selection (testnet/mainnet)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-dad1f03c15d29cddaeb2",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 114,
+              "column": 3
+            },
+            {
+              "title": "should persist wallet connection across page reloads",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-264816f402e1373630bc",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 138,
+              "column": 3
+            },
+            {
+              "title": "should display correct network badge (testnet)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-543f3c5cb7ab21f54097",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "should handle wallet connection errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-17d186f4f6201a4dac71",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 180,
+              "column": 3
+            },
+            {
+              "title": "should show wallet balance if available",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bddd819ecb73b1a4b544-3e1e1c2649ef5a281aaf",
+              "file": "02-wallet-connection.spec.ts",
+              "line": 203,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "03-shield-flow.spec.ts",
+      "file": "03-shield-flow.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Shield Creation Flow",
+          "file": "03-shield-flow.spec.ts",
+          "line": 19,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display shield creation form",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-f3ccbb092c57768d383b",
+              "file": "03-shield-flow.spec.ts",
+              "line": 41,
+              "column": 3
+            },
+            {
+              "title": "should validate required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-fead39c3711b595d582e",
+              "file": "03-shield-flow.spec.ts",
+              "line": 52,
+              "column": 3
+            },
+            {
+              "title": "should fill out shield form with valid data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-03fd82c25e3640242921",
+              "file": "03-shield-flow.spec.ts",
+              "line": 62,
+              "column": 3
+            },
+            {
+              "title": "should successfully create a shield with mocked API",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-7a42c9cae3d1971f57b6",
+              "file": "03-shield-flow.spec.ts",
+              "line": 84,
+              "column": 3
+            },
+            {
+              "title": "should display shield ID after successful creation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-375fa5b7cb37face8b90",
+              "file": "03-shield-flow.spec.ts",
+              "line": 106,
+              "column": 3
+            },
+            {
+              "title": "should display quantum signature information",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-f3ac42c6ed7574b5ade7",
+              "file": "03-shield-flow.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "should display Hedera transaction proof",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-6f771f6cc979e7080b78",
+              "file": "03-shield-flow.spec.ts",
+              "line": 154,
+              "column": 3
+            },
+            {
+              "title": "should handle API errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-769aaade9f18c59ca679",
+              "file": "03-shield-flow.spec.ts",
+              "line": 179,
+              "column": 3
+            },
+            {
+              "title": "should disable submit button while creating shield",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-9cc6c3c9226c8942f921",
+              "file": "03-shield-flow.spec.ts",
+              "line": 205,
+              "column": 3
+            },
+            {
+              "title": "should show loading indicator during shield creation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-e1509e57f2138c9b99d1",
+              "file": "03-shield-flow.spec.ts",
+              "line": 228,
+              "column": 3
+            },
+            {
+              "title": "should allow navigation to view shield after creation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d9b937996a89f34c2884-60a208c98384e77b4dc0",
+              "file": "03-shield-flow.spec.ts",
+              "line": 248,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-02-24T05:56:03.519Z",
+    "duration": 110.25300000000004,
+    "expected": 0,
+    "skipped": 31,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

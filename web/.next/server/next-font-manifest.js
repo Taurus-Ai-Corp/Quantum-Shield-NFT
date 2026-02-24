@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/Users/taurus_ai/Desktop/TAURUS_AI_SAAS/products/Quantum-Shield-NFT/.worktrees/feature/fullstack-web3-saas/web/src/app/layout":["static/media/e4af272ccee01ff0-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';

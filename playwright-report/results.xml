@@ -1,0 +1,132 @@
+<testsuites id="" name="" tests="31" failures="0" skipped="31" errors="0" time="0.11025300000000005">
+<testsuite name="01-landing.spec.ts" timestamp="2026-02-24T05:56:03.628Z" hostname="chromium" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Landing Page › should load landing page successfully" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display hero section with CTA" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display key features section" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should have working navigation links" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should be responsive on mobile viewport" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should have proper meta tags for SEO" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should load without console errors" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should have accessibility landmarks" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display footer with links" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should handle navigation to dashboard route" classname="01-landing.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="02-wallet-connection.spec.ts" timestamp="2026-02-24T05:56:03.628Z" hostname="chromium" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Wallet Connection › should display connect wallet button" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should show wallet connection modal on button click" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should close wallet modal on cancel" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should display wallet address after successful connection" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should show disconnect option when wallet is connected" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should handle network selection (testnet/mainnet)" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should persist wallet connection across page reloads" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should display correct network badge (testnet)" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should handle wallet connection errors gracefully" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Wallet Connection › should show wallet balance if available" classname="02-wallet-connection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="03-shield-flow.spec.ts" timestamp="2026-02-24T05:56:03.628Z" hostname="chromium" tests="11" failures="0" skipped="11" time="0" errors="0">
+<testcase name="Shield Creation Flow › should display shield creation form" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should validate required fields" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should fill out shield form with valid data" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should successfully create a shield with mocked API" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should display shield ID after successful creation" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should display quantum signature information" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should display Hedera transaction proof" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should handle API errors gracefully" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should disable submit button while creating shield" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should show loading indicator during shield creation" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Shield Creation Flow › should allow navigation to view shield after creation" classname="03-shield-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
