@@ -46,6 +46,7 @@ const config: Config = {
     '/web/',
     '/dist/',
     '/.next/',
+    '/e2e/',  // Exclude Playwright E2E tests (run via 'npx playwright test')
     'NFTShieldService.test.ts', // Skip until dependencies resolved
   ],
   globals: {
