@@ -87,6 +87,7 @@ export class GridDBClient {
   ): Promise<T> {
     const url = `${this.config.host}${this.config.cluster}/${this.config.database}${endpoint}`;
 
+    // eslint-disable-next-line no-undef -- RequestInit is a built-in TypeScript type
     const options: RequestInit = {
       method,
       headers: {
