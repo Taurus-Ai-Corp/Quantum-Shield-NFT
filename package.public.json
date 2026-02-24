@@ -1,0 +1,83 @@
+{
+  "name": "@quantum-shield/sdk",
+  "version": "2.0.0",
+  "description": "Quantum-safe NFT protection SDK for Hedera blockchain using ML-DSA-65 and ML-KEM-768 post-quantum cryptography",
+  "main": "dist/sdk/index.js",
+  "types": "dist/sdk/index.d.ts",
+  "license": "FSL-1.1-MIT",
+  "author": {
+    "name": "TAURUS AI CORP - FZCO",
+    "email": "admin@taurusai.io",
+    "url": "https://taurusai.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Taurus-Ai-Corp/quantum-shield-sdk.git"
+  },
+  "homepage": "https://taurusai.io",
+  "bugs": {
+    "url": "https://github.com/Taurus-Ai-Corp/quantum-shield-sdk/issues",
+    "email": "admin@taurusai.io"
+  },
+  "keywords": [
+    "quantum-safe",
+    "post-quantum",
+    "post-quantum-cryptography",
+    "pqc",
+    "nft",
+    "hedera",
+    "blockchain",
+    "ml-dsa",
+    "ml-kem",
+    "digital-signature",
+    "key-encapsulation",
+    "nist-fips-203",
+    "nist-fips-204",
+    "provenance",
+    "tamper-proof",
+    "crypto-agility",
+    "typescript",
+    "sdk"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "files": [
+    "dist/sdk",
+    "dist/sdk.d.ts",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "docs"
+  ],
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "npm run build:compile && npm run build:types",
+    "build:compile": "tsc --project tsconfig.sdk.json",
+    "build:types": "tsc --project tsconfig.sdk.json --declaration --emitDeclarationOnly --outDir dist",
+    "test": "jest --config jest.config.js",
+    "lint": "eslint src/sdk/**/*.ts",
+    "format": "prettier --write src/sdk/**/*.ts"
+  },
+  "dependencies": {
+    "@hashgraph/sdk": "^2.50.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0",
+    "prettier": "^3.4.0",
+    "eslint": "^9.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Taurus-Ai-Corp"
+  }
+}
