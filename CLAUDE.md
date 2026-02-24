@@ -748,7 +748,41 @@ When running `npm install` in worktrees, npm may modify `package.json` files (ad
 
 **Recommendation:** Commit these changes if they improve project configuration, or revert them if unintended.
 
+### Config File Compatibility
+
+When using `"type": "module"` in package.json, all `.js` files must use ES module syntax:
+- Check Next.js, PostCSS, and ESLint configs for compatibility
+- Config files may need conversion from `module.exports` to `export default`
+- File operations work correctly in worktrees with absolute paths
+
 ---
 
-**Last Updated:** 2026-02-23
-**Version:** 1.0.0
+## Next.js Configuration
+
+- Next.js config must be `.js`, `.mjs`, or `.ts` - `.cjs` not supported
+- With `"type": "module"` in package.json, use `export default` not `module.exports`
+- PostCSS and ESLint configs follow same ES module pattern
+
+---
+
+## TypeScript Error Patterns
+
+- **TS4111** (process.env): Use bracket notation `process.env['VAR']` not `process.env.VAR`
+- **TS2307** (missing module): Remove `.js` extensions from imports in `.ts` files
+- **TS2304** (missing type): Add type to imports even if exported elsewhere in file
+- **TS4115** (override): Add `override` keyword to Error subclass constructor params
+- Fix: Disable `noPropertyAccessFromIndexSignature` in tsconfig.json if needed
+
+---
+
+## Research & Debugging Commands
+
+- `firecrawl search "query" --scrape --limit 5 -o .firecrawl/result.json` - Research with full content
+- Run parallel Firecrawl searches with `&` and `wait` (respect concurrency limits)
+- `gh run view <run-id> --log-failed | grep -i "error"` - Find CI failures fast
+- Check Firecrawl status: `firecrawl --status` (shows credits, concurrency limit)
+
+---
+
+**Last Updated:** 2026-02-24
+**Version:** 1.0.1

@@ -10,11 +10,7 @@
 import { HederaClient } from '../hedera/HederaClient';
 import { QuantumCryptoManager } from '../quantum-crypto/index';
 import type { GeneratedIdentity, SignatureData } from '../quantum-crypto/QuantumCryptoManager';
-import type {
-  QuantumNFTCollection,
-  MintedNFT,
-  QuantumToken,
-} from '../hedera/HederaClient';
+import type { QuantumNFTCollection, MintedNFT, QuantumToken } from '../hedera/HederaClient';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
@@ -64,8 +60,8 @@ export interface NFTData {
  */
 export interface StoredCollection extends QuantumNFTCollection {
   metadata: {
-    tokenId: string;  // Required by QuantumNFTCollection
-    maxSupply: number;  // Required by QuantumNFTCollection
+    tokenId: string; // Required by QuantumNFTCollection
+    maxSupply: number; // Required by QuantumNFTCollection
     collectionId: string;
     creator: string;
     name: string;

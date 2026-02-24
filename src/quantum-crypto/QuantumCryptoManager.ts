@@ -51,12 +51,12 @@ export interface QuantumCryptoConfig {
  */
 export interface SigningKeyPair {
   algorithm: MLDSALevel;
-  publicKey?: Uint8Array;  // Not stored locally for AWS KMS
-  secretKey?: Uint8Array;  // Not stored locally for AWS KMS
-  publicKeyHex?: Hex;      // Not stored locally for AWS KMS
+  publicKey?: Uint8Array; // Not stored locally for AWS KMS
+  secretKey?: Uint8Array; // Not stored locally for AWS KMS
+  publicKeyHex?: Hex; // Not stored locally for AWS KMS
   secretKeyHex?: Hex;
   created: string;
-  keyId?: string;          // Required for AWS KMS managed keys
+  keyId?: string; // Required for AWS KMS managed keys
   awsManaged?: boolean;
   metadata?: {
     securityLevel: number;
@@ -217,8 +217,8 @@ export class QuantumCryptoManager {
       hybridMode: config.hybridMode || {
         enabled: true,
         eccCurve: 'ed25519',
-        combineMode: 'kdf'
-      }
+        combineMode: 'kdf',
+      },
     };
 
     // Initialize cryptography modules
@@ -279,8 +279,8 @@ export class QuantumCryptoManager {
         quantumResistant: true,
         nistCompliant: true,
         rotationSchedule: this.config.rotationDays,
-        hybridMode: this.config.hybridMode.enabled
-      }
+        hybridMode: this.config.hybridMode.enabled,
+      },
     };
 
     // Store in memory
@@ -296,8 +296,8 @@ export class QuantumCryptoManager {
       name: identityName,
       publicKeys: {
         signing: signingKeys.publicKey as any,
-        kem: kemKeys.publicKey as any
-      }
+        kem: kemKeys.publicKey as any,
+      },
     };
   }
 
@@ -320,7 +320,7 @@ export class QuantumCryptoManager {
     return {
       identityId: identityId,
       signature: signature as any,
-      publicKey: identity.signingKeys.publicKey || { keyId: identity.signingKeys.keyId! }
+      publicKey: identity.signingKeys.publicKey || { keyId: identity.signingKeys.keyId! },
     } as SignatureData;
   }
 
@@ -358,10 +358,7 @@ export class QuantumCryptoManager {
     const encapsulation = this.mlkem.encapsulate(recipientPublicKey);
 
     // Sign the encapsulation for authenticity
-    const signatureData = await this.signData(
-      senderIdentityId,
-      encapsulation.ciphertextHex
-    );
+    const signatureData = await this.signData(senderIdentityId, encapsulation.ciphertextHex);
 
     return {
       channelId: crypto.randomUUID(),
@@ -369,7 +366,7 @@ export class QuantumCryptoManager {
       encapsulation: encapsulation,
       signature: signatureData.signature,
       senderPublicKey: sender.signingKeys.publicKey || { keyId: sender.signingKeys.keyId! },
-      created: new Date().toISOString()
+      created: new Date().toISOString(),
     };
   }
 
@@ -409,7 +406,7 @@ export class QuantumCryptoManager {
       channelId: channelData.channelId,
       sharedKey: symmetricKey as any,
       verified: true,
-      established: new Date().toISOString()
+      established: new Date().toISOString(),
     };
   }
 
@@ -426,15 +423,12 @@ export class QuantumCryptoManager {
 
     // Optionally sign the encrypted package
     if (senderIdentityId) {
-      const signature = await this.signData(
-        senderIdentityId,
-        JSON.stringify(encrypted)
-      );
+      const signature = await this.signData(senderIdentityId, JSON.stringify(encrypted));
 
       return {
         ...encrypted,
         signature,
-        authenticated: true
+        authenticated: true,
       };
     }
 
@@ -471,10 +465,7 @@ export class QuantumCryptoManager {
     }
 
     // Decrypt
-    return (await this.mlkem.hybridDecrypt(
-      recipient.kemKeys.secretKey,
-      encryptedPackage
-    )) as any;
+    return (await this.mlkem.hybridDecrypt(recipient.kemKeys.secretKey, encryptedPackage)) as any;
   }
 
   /**
@@ -487,16 +478,14 @@ export class QuantumCryptoManager {
 
     // Apply quantum-inspired post-processing
     const quantumSeed = this.mldsa.quantumHash(classicalRandom);
-    const processedRandom = crypto.createHash('sha3-256')
-      .update(quantumSeed)
-      .digest();
+    const processedRandom = crypto.createHash('sha3-256').update(quantumSeed).digest();
 
     return {
       random: processedRandom,
       randomHex: processedRandom.toString('hex'),
       bytes: processedRandom.length,
       quantum: 'simulated',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 
@@ -505,17 +494,14 @@ export class QuantumCryptoManager {
    */
   private async saveIdentity(identity: QuantumIdentity): Promise<void> {
     try {
-      const filename = path.join(
-        this.config.keyStorePath,
-        `${identity.id}.json`
-      );
+      const filename = path.join(this.config.keyStorePath, `${identity.id}.json`);
 
       // Only save non-sensitive data for AWS-managed keys
       const toSave: Partial<QuantumIdentity> = {
         id: identity.id,
         name: identity.name,
         created: identity.created,
-        metadata: identity.metadata
+        metadata: identity.metadata,
       };
 
       if (!identity.signingKeys.awsManaged) {
@@ -525,16 +511,13 @@ export class QuantumCryptoManager {
           algorithm: identity.signingKeys.algorithm,
           keyId: identity.signingKeys.keyId!,
           awsManaged: true,
-          created: identity.signingKeys.created
+          created: identity.signingKeys.created,
         };
       }
 
       toSave.kemKeys = identity.kemKeys;
 
-      await fs.writeFile(
-        filename,
-        JSON.stringify(toSave, null, 2)
-      );
+      await fs.writeFile(filename, JSON.stringify(toSave, null, 2));
 
       console.log(`💾 Identity saved: ${filename}`);
     } catch (error) {
@@ -548,10 +531,7 @@ export class QuantumCryptoManager {
    */
   async loadIdentity(identityId: string): Promise<QuantumIdentity | null> {
     try {
-      const filename = path.join(
-        this.config.keyStorePath,
-        `${identityId}.json`
-      );
+      const filename = path.join(this.config.keyStorePath, `${identityId}.json`);
 
       const data = await fs.readFile(filename, 'utf8');
       const identity = JSON.parse(data) as QuantumIdentity;
@@ -561,28 +541,24 @@ export class QuantumCryptoManager {
         // Restore signing keys from hex
         if (identity.signingKeys.publicKeyHex) {
           identity.signingKeys.publicKey = new Uint8Array(
-            identity.signingKeys.publicKeyHex.match(/.{1,2}/g)!
-              .map(byte => parseInt(byte, 16))
+            identity.signingKeys.publicKeyHex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
           );
         }
 
         if (identity.signingKeys.secretKeyHex) {
           identity.signingKeys.secretKey = new Uint8Array(
-            identity.signingKeys.secretKeyHex.match(/.{1,2}/g)!
-              .map(byte => parseInt(byte, 16))
+            identity.signingKeys.secretKeyHex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
           );
         }
       }
 
       // Restore KEM keys from hex
       identity.kemKeys.publicKey = new Uint8Array(
-        identity.kemKeys.publicKeyHex.match(/.{1,2}/g)!
-          .map(byte => parseInt(byte, 16))
+        identity.kemKeys.publicKeyHex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
       );
 
       identity.kemKeys.secretKey = new Uint8Array(
-        identity.kemKeys.secretKeyHex.match(/.{1,2}/g)!
-          .map(byte => parseInt(byte, 16))
+        identity.kemKeys.secretKeyHex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
       );
 
       this.keyStore.set(identityId, identity);
@@ -622,9 +598,9 @@ export class QuantumCryptoManager {
       needsRotation: this.needsRotation(identity),
       algorithms: {
         signing: identity.signingKeys.algorithm,
-        kem: identity.kemKeys.algorithm
+        kem: identity.kemKeys.algorithm,
       },
-      awsManaged: identity.signingKeys.awsManaged || false
+      awsManaged: identity.signingKeys.awsManaged || false,
     };
   }
 }

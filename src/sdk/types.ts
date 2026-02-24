@@ -13,13 +13,7 @@ export type HederaNetwork = 'testnet' | 'mainnet' | 'previewnet';
 /**
  * Asset category for NFT protection
  */
-export type AssetCategory =
-  | 'art'
-  | 'collectible'
-  | 'document'
-  | 'ip'
-  | 'certificate'
-  | 'other';
+export type AssetCategory = 'art' | 'collectible' | 'document' | 'ip' | 'certificate' | 'other';
 
 /**
  * Cryptographic state in the 5-state migration model
