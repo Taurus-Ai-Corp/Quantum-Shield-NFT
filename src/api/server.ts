@@ -408,7 +408,7 @@ export async function createServer(config: ServerConfig = {}) {
     return reply.code(500).send({
       error: 'Internal Server Error',
       message:
-        process.env.NODE_ENV === 'production' ? 'An unexpected error occurred' : err.message,
+        process.env['NODE_ENV'] === 'production' ? 'An unexpected error occurred' : err.message,
     });
   });
 
@@ -431,7 +431,7 @@ export async function startServer(config: ServerConfig = {}) {
 ║         QUANTUM SHIELD NFT API SERVER STARTED                ║
 ╠═══════════════════════════════════════════════════════════════╣
 ║  URL: http://${host}:${port}${' '.repeat(Math.max(0, 44 - host.length - port.toString().length))} ║
-║  Environment: ${(process.env.NODE_ENV || 'development').padEnd(45)} ║
+║  Environment: ${(process.env['NODE_ENV'] || 'development').padEnd(45)} ║
 ║  Network: ${(config.hederaNetwork || 'testnet').padEnd(49)} ║
 ║  Rate Limit: ${(config.rateLimitMax || 100).toString().padEnd(47)} requests/min ║
 ╚═══════════════════════════════════════════════════════════════╝

@@ -12,6 +12,7 @@ import type {
   ProvenanceEvent,
   MigrationStatus,
   CryptoState,
+  AssetMetadata,
 } from './types';
 
 /**

@@ -7,14 +7,14 @@
  * @compliance NIST FIPS 203/204, Hedera HTS/HCS standards
  */
 
-import { HederaClient } from '../hedera/HederaClient.js';
-import { QuantumCryptoManager } from '../quantum-crypto/index.js';
-import type { GeneratedIdentity, SignatureData } from '../quantum-crypto/QuantumCryptoManager.js';
+import { HederaClient } from '../hedera/HederaClient';
+import { QuantumCryptoManager } from '../quantum-crypto/index';
+import type { GeneratedIdentity, SignatureData } from '../quantum-crypto/QuantumCryptoManager';
 import type {
   QuantumNFTCollection,
   MintedNFT,
   QuantumToken,
-} from '../hedera/HederaClient.js';
+} from '../hedera/HederaClient';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
