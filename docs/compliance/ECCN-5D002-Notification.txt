@@ -1,0 +1,153 @@
+To: crypt@bis.doc.gov, enc@nsa.gov
+Cc: admin@taurusai.io
+Subject: [ECCN 5D002] Public Availability Notification - Quantum-Shield-NFT
+
+Dear Bureau of Industry and Security / National Security Agency,
+
+This letter constitutes notification under 15 CFR § 742.15(b) of the public availability of encryption software pursuant to 15 CFR § 740.13(e) (License Exception TSU).
+
+=== PRODUCT INFORMATION ===
+
+Product Name: Quantum-Shield-NFT
+Version: 2.0.0
+Website: https://shield.q-grid.ca
+GitHub Repository: https://github.com/Taurus-Ai-Corp/Quantum-Shield-NFT
+License: FSL 1.1 (Functional Source License) - Converts to MIT after 2 years
+
+=== SUBMITTER INFORMATION ===
+
+Company: TAURUS AI CORP - FZCO
+Address: Dubai Silicon Oasis, IFZA Building A2, Dubai, UAE
+Registration: IFZA #66075 | License #68122
+Contact: admin@taurusai.io
+Website: https://taurusai.io
+
+Individual Contact:
+Name: Effin Fernandez
+Title: Director / Sole Shareholder (UBO)
+Citizenship: Canadian
+Email: admin@taurusai.io
+
+=== CLASSIFICATION ===
+
+Export Control Classification Number (ECCN): 5D002
+
+Description:
+Quantum-Shield-NFT is open-source encryption software for post-quantum cryptographic protection of digital assets (NFTs) using NIST-standardized algorithms. The software provides:
+
+1. ML-DSA-65 (Module-Lattice Digital Signature Algorithm) - FIPS 204
+2. ML-KEM-768 (Module-Lattice Key Encapsulation Mechanism) - FIPS 203
+3. SHA3-256 hashing
+4. Hedera Hashgraph blockchain timestamping integration
+
+All cryptographic implementations are derived from publicly available NIST standards and open-source libraries.
+
+=== LICENSE EXCEPTION ELIGIBILITY ===
+
+This software qualifies for License Exception TSU under 15 CFR § 740.13(e) because:
+
+1. ✅ The source code is publicly available (GitHub)
+2. ✅ It is not subject to an express agreement for payment of licensing fee or royalty for commercial production or sale
+3. ✅ It is cryptographic source code that has been made publicly available
+4. ✅ A copy of this notification is being sent to crypt@bis.doc.gov and enc@nsa.gov
+5. ✅ The publicly available URL is provided below
+
+=== TECHNICAL DETAILS ===
+
+Cryptographic Algorithms:
+- ML-DSA-65 (NIST FIPS 204) - Post-Quantum Digital Signatures
+  - Key size: 2,592 bytes (public), 4,032 bytes (private)
+  - Security level: NIST Security Level 3 (~192-bit classical security)
+  - Implementation: @noble/post-quantum v0.5.2
+
+- ML-KEM-768 (NIST FIPS 203) - Post-Quantum Key Encapsulation
+  - Key size: 1,184 bytes (public), 2,400 bytes (private)
+  - Security level: NIST Security Level 3 (~192-bit classical security)
+  - Implementation: @noble/post-quantum v0.5.2
+
+- SHA3-256 - Cryptographic Hash Function
+  - Hash output: 256 bits
+  - Implementation: @noble/hashes v1.6.6
+
+- Hedera Hashgraph Integration
+  - HTS (Hedera Token Service) - NFT token management
+  - HCS (Hedera Consensus Service) - Immutable timestamping
+  - SDK: @hashgraph/sdk v2.50.0
+
+Crypto-Agility States:
+1. HBAR_SIGN: Hedera Ed25519 signatures (quantum-vulnerable, legacy)
+2. HYBRID_SIGN: Dual signatures (ML-DSA-65 + Ed25519)
+3. ML-DSA_ONLY: Pure post-quantum signatures
+4. QUANTUM_EXPERIMENTAL: Research/testing mode
+5. MIGRATION_COMPLETE: Full PQC transition
+
+=== USE CASE ===
+
+Quantum-Shield-NFT enables organizations to protect digital assets (NFTs representing art, intellectual property, documents, certificates) against future quantum computing attacks. The software:
+
+1. Creates quantum-safe signatures for NFT metadata
+2. Implements cryptographic agility for migration from classical to post-quantum algorithms
+3. Anchors quantum-protected hashes to Hedera blockchain for timestamped provenance
+4. Supports 5-state migration path for gradual transition
+
+Target Markets:
+- Financial services (digital securities, asset tokenization)
+- Healthcare (medical records, HIPAA compliance)
+- Legal (contracts, notarization, chain of custody)
+- Enterprise (intellectual property, supply chain)
+- Government (document authenticity, records management)
+
+=== SOURCE CODE AVAILABILITY ===
+
+The complete source code is publicly accessible at:
+
+Primary Repository (Public):
+https://github.com/Taurus-Ai-Corp/Quantum-Shield-NFT
+
+Documentation:
+https://shield.q-grid.ca/docs
+
+License File:
+https://github.com/Taurus-Ai-Corp/Quantum-Shield-NFT/blob/main/LICENSE
+
+The source code includes:
+- Cryptographic implementations (src/quantum-crypto/)
+- Hedera blockchain integration (src/hedera/)
+- NFT protection services (src/services/)
+- API server (src/api/)
+- Test suites (tests/)
+- Documentation (docs/)
+
+=== EXPORT RESTRICTIONS ===
+
+As this software is published as open-source under TSU License Exception, it is not subject to Export Administration Regulations (EAR) export licensing requirements for general availability to the public.
+
+However, TAURUS AI CORP acknowledges that:
+1. Certain countries remain subject to embargo (Cuba, Iran, North Korea, Syria, Russia, Belarus)
+2. Specific end-users may be restricted (SDN list, Entity List)
+3. Military/weapons applications remain restricted
+
+=== DECLARATION ===
+
+I hereby certify that the information contained in this notification is true and correct to the best of my knowledge.
+
+This notification is submitted in accordance with 15 CFR § 742.15(b) prior to making the encryption source code publicly available.
+
+Date of Public Availability: [TO BE DETERMINED - SEND THIS EMAIL BEFORE LAUNCH]
+
+Sincerely,
+
+Effin Fernandez
+Director, TAURUS AI CORP - FZCO
+IFZA Registration #66075
+Dubai Silicon Oasis, UAE
+
+---
+
+ATTACHMENTS (if sending via postal mail):
+1. Copy of GitHub repository structure
+2. Sample source code excerpts (quantum-crypto modules)
+3. NIST algorithm references (FIPS 203, FIPS 204)
+4. FSL 1.1 License text
+
+NOTE TO USER: Send this email BEFORE making the repository public or launching the product. The notification is required under 15 CFR § 742.15(b).
