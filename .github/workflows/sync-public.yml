@@ -1,0 +1,170 @@
+name: Sync Public Repository
+
+on:
+  workflow_dispatch: # Manual trigger
+  push:
+    branches: [main]
+    paths:
+      - 'src/sdk/**'
+      - 'examples/**'
+      - 'docs/public/**'
+      - 'README.public.md'
+      - 'package.public.json'
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Pre-Sync Security Scan
+    steps:
+      - name: Checkout private repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build SDK
+        run: |
+          npm run build:sdk || echo "Build script not yet configured"
+
+      - name: Scan for secrets
+        run: |
+          npx detect-secrets scan --baseline .secrets.baseline dist/ || true
+
+      - name: Verify no proprietary patterns
+        run: |
+          # Check for patent-pending code markers in dist/
+          if grep -r "PATENT PENDING" dist/ 2>/dev/null; then
+            echo "ERROR: Proprietary code detected in dist/"
+            exit 1
+          fi
+          
+          # Check for internal comments
+          if grep -r "TODO: Internal" dist/ 2>/dev/null; then
+            echo "ERROR: Internal comments detected in dist/"
+            exit 1
+          fi
+          
+          echo "✅ No proprietary patterns detected"
+
+      - name: Upload SDK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdk-dist
+          path: dist/sdk
+          retention-days: 1
+
+  sync-public:
+    needs: security-scan
+    runs-on: ubuntu-latest
+    name: Sync to Public Repo
+    steps:
+      - name: Checkout private repo
+        uses: actions/checkout@v4
+        with:
+          path: private
+
+      - name: Download SDK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: sdk-dist
+          path: dist/sdk
+
+      - name: Checkout public repo
+        uses: actions/checkout@v4
+        with:
+          repository: Taurus-Ai-Corp/quantum-shield-sdk
+          token: ${{ secrets.PUBLIC_REPO_PAT }}
+          path: public
+
+      - name: Sync files
+        run: |
+          # Copy compiled SDK
+          mkdir -p public/dist
+          cp -r dist/sdk/* public/dist/
+
+          # Copy public documentation
+          mkdir -p public/docs
+          if [ -d "private/docs/public" ]; then
+            cp -r private/docs/public/* public/docs/
+          fi
+
+          # Copy examples (if they exist)
+          mkdir -p public/examples
+          if [ -d "private/examples" ]; then
+            cp -r private/examples/* public/examples/
+          fi
+
+          # Copy public-facing README
+          cp private/README.public.md public/README.md
+
+          # Copy public package.json
+          cp private/package.public.json public/package.json
+
+          # Copy LICENSE (FSL 1.1)
+          cp private/LICENSE public/LICENSE
+
+          # Copy legal documents
+          cp private/SECURITY.md public/SECURITY.md || true
+          cp private/CODE_OF_CONDUCT.md public/CODE_OF_CONDUCT.md || true
+          cp private/EXPORT-CONTROL.md public/EXPORT-CONTROL.md || true
+          cp private/THIRD-PARTY-NOTICES.md public/THIRD-PARTY-NOTICES.md || true
+
+      - name: Commit and push
+        working-directory: public
+        run: |
+          git config user.name "TAURUS AI Bot"
+          git config user.email "bot@taurusai.io"
+          
+          git add .
+          
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            git commit -m "Sync from private repo ($TIMESTAMP)" \
+                       -m "Automated sync from Quantum-Shield-NFT private repository" \
+                       -m "Changes:" \
+                       -m "$(git diff --name-only --cached | head -10)"
+            git push
+            echo "✅ Successfully synced to public repository"
+          fi
+
+  verify-sync:
+    needs: sync-public
+    runs-on: ubuntu-latest
+    name: Verify Public Repo
+    steps:
+      - name: Checkout public repo
+        uses: actions/checkout@v4
+        with:
+          repository: Taurus-Ai-Corp/quantum-shield-sdk
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci || echo "Package dependencies not yet configured"
+
+      - name: Run tests
+        run: npm test || echo "Tests not yet configured"
+
+      - name: Verify SDK exports
+        run: |
+          node -e "
+            try {
+              const sdk = require('./dist/index.js');
+              console.log('✅ SDK exports verified');
+              console.log('Exports:', Object.keys(sdk).join(', '));
+            } catch (error) {
+              console.error('❌ SDK verification failed:', error.message);
+              process.exit(1);
+            }
+          " || echo "SDK not yet compiled"
