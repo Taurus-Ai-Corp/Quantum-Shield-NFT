@@ -71,7 +71,6 @@ PATENT_*
 cursor-*
 
 # Source code with IP (keep only demo/public code)
-src/quantum-crypto/
 src/hedera/HederaClient.js
 src/ai-agents/QuantumAIAgent.js
 src/nft-marketplace/QuantumNFTMarketplace.js
