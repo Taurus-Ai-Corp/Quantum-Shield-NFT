@@ -2,6 +2,7 @@
   "name": "quantum-shield-nft-web",
   "version": "1.0.0",
   "description": "Quantum-Shield-NFT Web3 SaaS Frontend",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000",
