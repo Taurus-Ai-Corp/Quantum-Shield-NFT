@@ -313,7 +313,7 @@ export class ShieldSDKError extends Error {
   constructor(
     public type: SDKErrorType,
     message: string,
-    public cause?: Error
+    public override cause?: Error
   ) {
     super(message);
     this.name = 'ShieldSDKError';
