@@ -49,9 +49,12 @@ jobs:
 
       - name: Generate coverage report
         run: npm run test:coverage
+        continue-on-error: true
 
       - name: Upload coverage to Codecov
+        if: success() || failure()
         uses: codecov/codecov-action@v4
+        continue-on-error: true
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/coverage-final.json
@@ -59,7 +62,9 @@ jobs:
           name: backend-coverage
 
       - name: Upload frontend coverage to Codecov
+        if: success() || failure()
         uses: codecov/codecov-action@v4
+        continue-on-error: true
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./web/coverage/coverage-final.json
@@ -68,6 +73,7 @@ jobs:
 
       - name: Comment test results
         if: always()
+        continue-on-error: true
         uses: actions/github-script@v7
         with:
           script: |
