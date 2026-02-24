@@ -155,10 +155,7 @@ export interface ShieldAPI {
    * console.log('Ownership transferred at:', event.timestamp);
    * ```
    */
-  transferOwnership(
-    shieldId: string,
-    newOwner: string
-  ): Promise<ProvenanceEvent>;
+  transferOwnership(shieldId: string, newOwner: string): Promise<ProvenanceEvent>;
 
   /**
    * Update metadata for a shielded asset
@@ -182,10 +179,7 @@ export interface ShieldAPI {
    * console.log('New signature:', result.signature);
    * ```
    */
-  updateMetadata(
-    shieldId: string,
-    metadata: Partial<AssetMetadata>
-  ): Promise<ShieldResult>;
+  updateMetadata(shieldId: string, metadata: Partial<AssetMetadata>): Promise<ShieldResult>;
 
   /**
    * Get shield details by ID
@@ -226,10 +220,7 @@ export interface ShieldAPI {
    * });
    * ```
    */
-  listShields(options?: {
-    limit?: number;
-    offset?: number;
-  }): Promise<ShieldResult[]>;
+  listShields(options?: { limit?: number; offset?: number }): Promise<ShieldResult[]>;
 }
 
 /**

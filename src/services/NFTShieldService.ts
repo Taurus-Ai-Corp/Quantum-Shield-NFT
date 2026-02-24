@@ -227,7 +227,7 @@ export class NFTShieldService {
         });
 
         // Initialize containers asynchronously (don't block constructor)
-        this.gridDBClient.initializeShieldContainers().catch(error => {
+        this.gridDBClient.initializeShieldContainers().catch((error) => {
           console.error('Failed to initialize GridDB containers:', error);
           this.useGridDB = false; // Fallback to Map() on failure
         });
@@ -382,7 +382,10 @@ export class NFTShieldService {
           metadata_json: JSON.stringify(shield),
         });
       } catch (error) {
-        console.warn('⚠️  Failed to write to GridDB, using Map fallback:', (error as Error).message);
+        console.warn(
+          '⚠️  Failed to write to GridDB, using Map fallback:',
+          (error as Error).message
+        );
         this.useGridDB = false; // Disable GridDB on write failure
       }
     }
@@ -534,7 +537,8 @@ export class NFTShieldService {
           timestamp: timestamp,
           asset_id: shield.assetId,
           event_type: eventType,
-          from_owner: eventType === 'OWNERSHIP_TRANSFERRED' ? (data['previousOwner'] as string) : actor,
+          from_owner:
+            eventType === 'OWNERSHIP_TRANSFERRED' ? (data['previousOwner'] as string) : actor,
           to_owner: eventType === 'OWNERSHIP_TRANSFERRED' ? (data['newOwner'] as string) : actor,
           quantum_signature: JSON.stringify(quantumSignature),
           hedera_topic_id: hederaProof.topicId || '',

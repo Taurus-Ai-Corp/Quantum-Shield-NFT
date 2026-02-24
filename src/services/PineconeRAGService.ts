@@ -9,11 +9,7 @@
  * @compliance RAG-enhanced developer assistance, compliance guidance, research integration
  */
 
-import {
-  Pinecone,
-  type Index,
-  type RecordMetadataValue,
-} from '@pinecone-database/pinecone';
+import { Pinecone, type Index, type RecordMetadataValue } from '@pinecone-database/pinecone';
 
 /**
  * Pinecone index names (ContextOS/DataOS namespaces)

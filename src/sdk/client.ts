@@ -80,17 +80,11 @@ export class QuantumShieldClient implements ShieldAPI {
    */
   private validateOptions(options: ShieldOptions): void {
     if (!options.operatorId) {
-      throw new ShieldSDKError(
-        'CONFIGURATION_ERROR',
-        'operatorId is required'
-      );
+      throw new ShieldSDKError('CONFIGURATION_ERROR', 'operatorId is required');
     }
 
     if (!options.operatorKey) {
-      throw new ShieldSDKError(
-        'CONFIGURATION_ERROR',
-        'operatorKey is required'
-      );
+      throw new ShieldSDKError('CONFIGURATION_ERROR', 'operatorKey is required');
     }
 
     // Validate Hedera account ID format (0.0.xxxxx)
@@ -137,11 +131,7 @@ export class QuantumShieldClient implements ShieldAPI {
       if (error instanceof ShieldSDKError) {
         throw error;
       }
-      throw new ShieldSDKError(
-        'CRYPTO_ERROR',
-        'Failed to shield asset',
-        error as Error
-      );
+      throw new ShieldSDKError('CRYPTO_ERROR', 'Failed to shield asset', error as Error);
     }
   }
 
@@ -155,11 +145,7 @@ export class QuantumShieldClient implements ShieldAPI {
       if (error instanceof ShieldSDKError) {
         throw error;
       }
-      throw new ShieldSDKError(
-        'CRYPTO_ERROR',
-        'Failed to verify integrity',
-        error as Error
-      );
+      throw new ShieldSDKError('CRYPTO_ERROR', 'Failed to verify integrity', error as Error);
     }
   }
 
@@ -173,11 +159,7 @@ export class QuantumShieldClient implements ShieldAPI {
       if (error instanceof ShieldSDKError) {
         throw error;
       }
-      throw new ShieldSDKError(
-        'HEDERA_ERROR',
-        'Failed to retrieve provenance',
-        error as Error
-      );
+      throw new ShieldSDKError('HEDERA_ERROR', 'Failed to retrieve provenance', error as Error);
     }
   }
 
@@ -188,11 +170,7 @@ export class QuantumShieldClient implements ShieldAPI {
     try {
       return await this.compiled.getMigrationStatus(this.config);
     } catch (error) {
-      throw new ShieldSDKError(
-        'CRYPTO_ERROR',
-        'Failed to get migration status',
-        error as Error
-      );
+      throw new ShieldSDKError('CRYPTO_ERROR', 'Failed to get migration status', error as Error);
     }
   }
 
@@ -203,51 +181,29 @@ export class QuantumShieldClient implements ShieldAPI {
     try {
       return await this.compiled.migrateToState(this.config, targetState);
     } catch (error) {
-      throw new ShieldSDKError(
-        'CRYPTO_ERROR',
-        'Failed to migrate crypto state',
-        error as Error
-      );
+      throw new ShieldSDKError('CRYPTO_ERROR', 'Failed to migrate crypto state', error as Error);
     }
   }
 
   /**
    * Transfer ownership of a shielded asset
    */
-  async transferOwnership(
-    shieldId: string,
-    newOwner: string
-  ): Promise<ProvenanceEvent> {
+  async transferOwnership(shieldId: string, newOwner: string): Promise<ProvenanceEvent> {
     try {
-      return await this.compiled.transferOwnership(
-        this.config,
-        shieldId,
-        newOwner
-      );
+      return await this.compiled.transferOwnership(this.config, shieldId, newOwner);
     } catch (error) {
-      throw new ShieldSDKError(
-        'HEDERA_ERROR',
-        'Failed to transfer ownership',
-        error as Error
-      );
+      throw new ShieldSDKError('HEDERA_ERROR', 'Failed to transfer ownership', error as Error);
     }
   }
 
   /**
    * Update metadata for a shielded asset
    */
-  async updateMetadata(
-    shieldId: string,
-    metadata: Partial<AssetMetadata>
-  ): Promise<ShieldResult> {
+  async updateMetadata(shieldId: string, metadata: Partial<AssetMetadata>): Promise<ShieldResult> {
     try {
       return await this.compiled.updateMetadata(this.config, shieldId, metadata);
     } catch (error) {
-      throw new ShieldSDKError(
-        'CRYPTO_ERROR',
-        'Failed to update metadata',
-        error as Error
-      );
+      throw new ShieldSDKError('CRYPTO_ERROR', 'Failed to update metadata', error as Error);
     }
   }
 
@@ -261,29 +217,18 @@ export class QuantumShieldClient implements ShieldAPI {
       if (error instanceof ShieldSDKError) {
         throw error;
       }
-      throw new ShieldSDKError(
-        'NOT_FOUND',
-        `Shield not found: ${shieldId}`,
-        error as Error
-      );
+      throw new ShieldSDKError('NOT_FOUND', `Shield not found: ${shieldId}`, error as Error);
     }
   }
 
   /**
    * List all shields for the current operator account
    */
-  async listShields(options?: {
-    limit?: number;
-    offset?: number;
-  }): Promise<ShieldResult[]> {
+  async listShields(options?: { limit?: number; offset?: number }): Promise<ShieldResult[]> {
     try {
       return await this.compiled.listShields(this.config, options);
     } catch (error) {
-      throw new ShieldSDKError(
-        'HEDERA_ERROR',
-        'Failed to list shields',
-        error as Error
-      );
+      throw new ShieldSDKError('HEDERA_ERROR', 'Failed to list shields', error as Error);
     }
   }
 
