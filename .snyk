@@ -1,0 +1,23 @@
+# Snyk (https://snyk.io) policy file
+
+# Ignore known issues
+ignore:
+  # Hedera SDK bn.js vulnerability - waiting for upstream fix
+  SNYK-JS-BNJS-2342707:
+    - '@hashgraph/sdk > @hashgraph/cryptography > bn.js':
+        reason: 'Hedera SDK transitive dependency - low risk for our use case'
+        expires: '2026-06-01T00:00:00.000Z'
+    - '@hashgraph/sdk > bn.js':
+        reason: 'Hedera SDK transitive dependency - low risk for our use case'
+        expires: '2026-06-01T00:00:00.000Z'
+
+# Language settings
+language-settings:
+  javascript:
+    severity-threshold: 'high'
+  
+# Patch settings  
+patch: {}
+
+# Organization settings
+organization: 'taurus-ai-corp'

@@ -1,0 +1,102 @@
+# Codecov Configuration
+# Documentation: https://docs.codecov.io/docs/codecov-yaml
+
+codecov:
+  require_ci_to_pass: yes
+  notify:
+    wait_for_ci: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+        base: auto
+        flags:
+          - backend
+          - frontend
+        if_not_found: success
+        if_ci_failed: error
+        informational: false
+        only_pulls: false
+
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+        base: auto
+        flags:
+          - backend
+          - frontend
+        if_not_found: success
+        if_ci_failed: error
+        informational: false
+        only_pulls: false
+
+    changes:
+      default:
+        target: auto
+        threshold: 1%
+        base: auto
+        if_not_found: success
+        if_ci_failed: error
+
+# Flag management
+flags:
+  backend:
+    paths:
+      - src/
+    carryforward: true
+    after_n_builds: 1
+
+  frontend:
+    paths:
+      - web/src/
+    carryforward: true
+    after_n_builds: 1
+
+# Pull request comments
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+  branches:
+    - main
+    - develop
+
+# Ignore patterns
+ignore:
+  - "tests/**"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - "**/.next/**"
+  - "**/coverage/**"
+  - "**/__tests__/**"
+  - "**/*.d.ts"
+  - "**/types/**"
+  - "**/*.stories.tsx"
+  - "demos/**"
+  - "scripts/**"
+
+# GitHub checks
+github_checks:
+  annotations: true
+
+# Parsers
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no

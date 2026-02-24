@@ -1,0 +1,64 @@
+# Pre-commit hooks for security and code quality
+# Install: pip install pre-commit && pre-commit install
+# Run manually: pre-commit run --all-files
+# https://pre-commit.com/
+
+repos:
+  # Secret scanning
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        name: Detect secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: |
+          (?x)^(
+              package-lock.json|
+              .*\.lock|
+              .*\.map|
+              node_modules/.*
+          )$
+
+  # General pre-commit checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: detect-private-key
+        name: Detect private keys (PEM, SSH)
+      - id: no-commit-to-branch
+        args: ['--branch', 'main', '--branch', 'master']
+
+  # TypeScript/JavaScript linting
+  - repo: local
+    hooks:
+      - id: eslint
+        name: ESLint
+        entry: npx eslint
+        language: system
+        types: [javascript, jsx, ts, tsx]
+        args: ['--fix']
+        pass_filenames: true
+        
+      - id: typecheck
+        name: TypeScript type check
+        entry: npm run typecheck
+        language: system
+        pass_filenames: false
+        types: [ts, tsx]
+        
+  # Security audits
+  - repo: local
+    hooks:
+      - id: npm-audit
+        name: npm security audit
+        entry: bash -c 'npm audit --audit-level=high'
+        language: system
+        pass_filenames: false
+        always_run: true

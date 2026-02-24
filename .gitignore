@@ -83,4 +83,4 @@ DEPLOYMENT_REPORT.json
 # Submission research outputs
 submission/osint-output/
 submission/apify-output/
-submission/gamma-output/
+submission/gamma-output/.firecrawl/

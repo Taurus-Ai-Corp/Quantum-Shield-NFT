@@ -1,0 +1,9 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/page": "/",
+  "/(dashboard)/compliance/page": "/compliance",
+  "/(dashboard)/marketplace/page": "/marketplace",
+  "/(dashboard)/dashboard/page": "/dashboard",
+  "/(dashboard)/provenance/page": "/provenance",
+  "/(dashboard)/shield/page": "/shield"
+}
