@@ -61,10 +61,19 @@ export async function createServer(config: ServerConfig = {}) {
   });
 
   // Register CORS
+  const allowedOrigins: (string | RegExp)[] = [
+    'https://shield.q-grid.ca',
+    'https://quantum-shield-nft.vercel.app',
+    /\.vercel\.app$/,
+  ];
+  if (process.env['NODE_ENV'] !== 'production') {
+    allowedOrigins.push('http://localhost:3000', 'http://localhost:3100');
+  }
   await fastify.register(cors, {
-    origin: process.env['CORS_ORIGIN'] || '*',
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
+    credentials: true,
   });
 
   // Register rate limiting

@@ -21,6 +21,9 @@ import type { SignatureData } from '../quantum-crypto/QuantumCryptoManager';
 import type { QuantumNFTCollection, SubmittedProof } from '../hedera/HederaClient';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
+import { createLogger } from '../lib/logger.js';
+
+const log = createLogger('NFTShieldService');
 
 /**
  * Shield service configuration
@@ -210,7 +213,7 @@ export class NFTShieldService {
           apiKey: config.pineconeApiKey,
         });
       } catch (error) {
-        console.warn('⚠️  Pinecone RAG service not available:', (error as Error).message);
+        log.warn(`Pinecone RAG service not available: ${(error as Error).message}`);
       }
     }
 
@@ -228,11 +231,11 @@ export class NFTShieldService {
 
         // Initialize containers asynchronously (don't block constructor)
         this.gridDBClient.initializeShieldContainers().catch((error) => {
-          console.error('Failed to initialize GridDB containers:', error);
+          log.error('Failed to initialize GridDB containers', error);
           this.useGridDB = false; // Fallback to Map() on failure
         });
       } catch (error) {
-        console.warn('⚠️  GridDB not available:', (error as Error).message);
+        log.warn(`GridDB not available: ${(error as Error).message}`);
         this.useGridDB = false;
       }
     }
@@ -244,21 +247,14 @@ export class NFTShieldService {
     this.shields = new Map<string, ShieldResult>();
     this.provenanceChains = new Map<string, ProvenanceChain>();
 
-    console.log(`
-╔═══════════════════════════════════════════════════════════════╗
-║           NFT SHIELD SERVICE INITIALIZED                     ║
-╠═══════════════════════════════════════════════════════════════╣
-║  Network: ${(config.hederaNetwork || 'testnet').padEnd(52)} ║
-║  Migration State: ${this.migrationState.padEnd(44)} ║
-║  Quantum Security: ML-DSA-65 + ML-KEM-768                    ║
-║  Hybrid ECC Mode: Enabled                                    ║
-║  Marketplace: ${(config.enableMarketplace !== false ? 'Enabled' : 'Disabled').padEnd(50)} ║
-║  IPFS Storage: ${(config.enableIPFS !== false ? `Enabled (${config.ipfsProvider || 'pinata'})` : 'Disabled').padEnd(49)} ║
-║  Pinecone RAG: ${(this.pineconeService ? 'Enabled' : 'Disabled').padEnd(49)} ║
-║  GridDB Storage: ${(this.useGridDB ? 'Enabled (Persistent)' : 'Disabled (In-Memory)').padEnd(47)} ║
-║  HIP-412 Compliance: Enabled                                 ║
-╚═══════════════════════════════════════════════════════════════╝
-    `);
+    log.info('Initialized', {
+      network: config.hederaNetwork || 'testnet',
+      migrationState: this.migrationState,
+      crypto: 'ML-DSA-65 + ML-KEM-768',
+      ipfs: config.enableIPFS !== false,
+      pinecone: !!this.pineconeService,
+      gridDB: this.useGridDB,
+    });
   }
 
   /**
@@ -268,7 +264,7 @@ export class NFTShieldService {
     // Validate input
     AssetDataSchema.parse(assetData);
 
-    console.log(`\n🛡️ Shielding asset: ${assetData.name}...`);
+    log.info(`Shielding asset: ${assetData.name}`);
 
     // Generate unique shield ID
     const shieldId = uuidv4();
@@ -308,7 +304,7 @@ export class NFTShieldService {
       throw new Error(`HIP-412 validation failed: ${hip412Validation.errors.join(', ')}`);
     }
 
-    console.log(`✅ HIP-412 metadata validated (${hip412Validation.warnings.length} warnings)`);
+    log.info(`HIP-412 metadata validated (${hip412Validation.warnings.length} warnings)`);
 
     // Upload metadata to IPFS if enabled
     let ipfsUpload: IPFSUploadResult | undefined;
@@ -318,7 +314,7 @@ export class NFTShieldService {
         pinToIPFS: true,
       });
 
-      console.log(`✅ Metadata uploaded to IPFS: ${ipfsUpload.cid}`);
+      log.info(`Metadata uploaded to IPFS: ${ipfsUpload.cid}`);
 
       // Update image field with IPFS URL if it was a placeholder
       if (hip412Metadata.image.includes('placeholder')) {
@@ -382,10 +378,7 @@ export class NFTShieldService {
           metadata_json: JSON.stringify(shield),
         });
       } catch (error) {
-        console.warn(
-          '⚠️  Failed to write to GridDB, using Map fallback:',
-          (error as Error).message
-        );
+        log.warn(`Failed to write to GridDB, using Map fallback: ${(error as Error).message}`);
         this.useGridDB = false; // Disable GridDB on write failure
       }
     }
@@ -396,9 +389,10 @@ export class NFTShieldService {
     // Initialize provenance chain
     await this.initializeProvenanceChain(shield, assetData);
 
-    console.log(`✅ Asset shielded: ${shieldId}`);
-    console.log(`   HCS Proof: ${hederaProof.transactionId}`);
-    console.log(`   Integrity Hash: ${integrityHash.substring(0, 16)}...`);
+    log.info(`Asset shielded: ${shieldId}`, {
+      transactionId: hederaProof.transactionId,
+      integrityHash: integrityHash.substring(0, 16),
+    });
 
     return shield;
   }
@@ -407,7 +401,7 @@ export class NFTShieldService {
    * Verify shield integrity and quantum signatures
    */
   async verifyShield(shieldId: string): Promise<IntegrityVerification> {
-    console.log(`\n🔍 Verifying shield: ${shieldId}...`);
+    log.info(`Verifying shield: ${shieldId}`);
 
     const shield = this.shields.get(shieldId);
     if (!shield) {
@@ -450,7 +444,7 @@ export class NFTShieldService {
       warnings: warnings.length > 0 ? warnings : undefined,
     };
 
-    console.log(`✅ Verification complete: ${verification.valid ? 'VALID' : 'INVALID'}`);
+    log.info(`Verification complete: ${verification.valid ? 'VALID' : 'INVALID'}`);
 
     return verification;
   }
@@ -545,7 +539,7 @@ export class NFTShieldService {
           hedera_sequence: hederaProof.sequenceNumber ? Number(hederaProof.sequenceNumber) : 0,
         });
       } catch (error) {
-        console.warn('⚠️  Failed to write provenance event to GridDB:', (error as Error).message);
+        log.warn(`Failed to write provenance event to GridDB: ${(error as Error).message}`);
       }
     }
 
@@ -565,7 +559,7 @@ export class NFTShieldService {
    * Perform compliance check
    */
   async checkCompliance(shieldId: string): Promise<ComplianceCheck> {
-    console.log(`\n📋 Checking compliance for shield: ${shieldId}...`);
+    log.info(`Checking compliance for shield: ${shieldId}`);
 
     const shield = this.shields.get(shieldId);
     if (!shield) {
@@ -615,9 +609,7 @@ export class NFTShieldService {
       checkedAt: new Date().toISOString(),
     };
 
-    console.log(
-      `✅ Compliance check complete: ${compliance.compliant ? 'COMPLIANT' : 'NON-COMPLIANT'}`
-    );
+    log.info(`Compliance check complete: ${compliance.compliant ? 'COMPLIANT' : 'NON-COMPLIANT'}`);
 
     return compliance;
   }
@@ -706,11 +698,11 @@ export class NFTShieldService {
    * Queries historical HCS topic messages for shield events
    */
   async getProvenanceFromMirrorNode(topicId: string, shieldId: string): Promise<any[]> {
-    console.log(`\n🔍 Querying Mirror Node for shield provenance: ${shieldId}...`);
+    log.info(`Querying Mirror Node for shield provenance: ${shieldId}`);
 
     const proofs = await this.mirrorNode.verifyShieldProvenance(topicId, shieldId);
 
-    console.log(`✅ Found ${proofs.length} provenance events on Mirror Node`);
+    log.info(`Found ${proofs.length} provenance events on Mirror Node`);
 
     return proofs;
   }
@@ -719,7 +711,7 @@ export class NFTShieldService {
    * Get NFT metadata from Mirror Node
    */
   async getNFTMetadataFromMirrorNode(tokenId: string, serialNumber: number): Promise<any> {
-    console.log(`\n📥 Fetching NFT metadata from Mirror Node: ${tokenId}/${serialNumber}...`);
+    log.info(`Fetching NFT metadata from Mirror Node: ${tokenId}/${serialNumber}`);
 
     const metadata = await this.mirrorNode.getNFTMetadata(tokenId, serialNumber);
 
@@ -730,7 +722,7 @@ export class NFTShieldService {
    * Get NFT transfer history from Mirror Node
    */
   async getNFTTransferHistory(tokenId: string, serialNumber: number): Promise<any[]> {
-    console.log(`\n📜 Fetching NFT transfer history: ${tokenId}/${serialNumber}...`);
+    log.info(`Fetching NFT transfer history: ${tokenId}/${serialNumber}`);
 
     const history = await this.mirrorNode.getNFTTransferHistory(tokenId, serialNumber);
 
@@ -747,7 +739,7 @@ export class NFTShieldService {
     mirrorNodeProofs: any[];
     discrepancies: string[];
   }> {
-    console.log(`\n🔐 Verifying shield with Mirror Node: ${shieldId}...`);
+    log.info(`Verifying shield with Mirror Node: ${shieldId}`);
 
     const localShield = this.shields.get(shieldId);
     const discrepancies: string[] = [];
@@ -780,11 +772,11 @@ export class NFTShieldService {
 
     const verified = discrepancies.length === 0;
 
-    console.log(
-      verified
-        ? `✅ Shield verified successfully`
-        : `⚠️  Shield verification found ${discrepancies.length} discrepancies`
-    );
+    if (verified) {
+      log.info('Shield verified successfully');
+    } else {
+      log.warn(`Shield verification found ${discrepancies.length} discrepancies`);
+    }
 
     return {
       verified,

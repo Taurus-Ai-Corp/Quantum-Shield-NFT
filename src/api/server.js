@@ -66,16 +66,48 @@ app.get('/health', async () => ({
   timestamp: new Date().toISOString()
 }));
 
+// --- API Key Auth Guard ---
+
+const API_KEY = process.env.SHIELD_API_KEY;
+
+function requireApiKey(request, reply, done) {
+  if (!API_KEY) {
+    // No API key configured — skip auth in development
+    if (process.env.NODE_ENV === 'production') {
+      reply.code(500).send({ error: 'Server misconfigured: API key not set' });
+      return;
+    }
+    done();
+    return;
+  }
+
+  const provided = request.headers['x-api-key'] || request.headers['authorization']?.replace('Bearer ', '');
+  if (provided !== API_KEY) {
+    reply.code(401).send({ error: 'Unauthorized: invalid or missing API key' });
+    return;
+  }
+  done();
+}
+
 // --- Shield Endpoints ---
 
-app.post('/api/v1/shield', async (request, reply) => {
+app.post('/api/v1/shield', {
+  preHandler: requireApiKey,
+  schema: {
+    body: {
+      type: 'object',
+      required: ['assetId', 'metadata', 'owner'],
+      properties: {
+        assetId: { type: 'string', minLength: 1, maxLength: 200 },
+        metadata: { type: 'object' },
+        owner: { type: 'string', minLength: 1, maxLength: 200 },
+        category: { type: 'string', maxLength: 100 },
+      },
+      additionalProperties: false,
+    },
+  },
+}, async (request, reply) => {
   const { assetId, metadata, owner, category } = request.body;
-
-  if (!assetId || !metadata || !owner) {
-    return reply.code(400).send({
-      error: 'Missing required fields: assetId, metadata, owner'
-    });
-  }
 
   const result = await shieldService.shieldAsset({
     assetId, metadata, owner, category
@@ -97,28 +129,50 @@ app.get('/api/v1/shield/:shieldId', async (request, reply) => {
 
 // --- Verification ---
 
-app.post('/api/v1/verify', async (request, reply) => {
+app.post('/api/v1/verify', {
+  schema: {
+    body: {
+      type: 'object',
+      required: ['shieldId', 'metadata'],
+      properties: {
+        shieldId: { type: 'string', minLength: 1, maxLength: 200 },
+        metadata: { type: 'object' },
+      },
+      additionalProperties: false,
+    },
+  },
+}, async (request, reply) => {
   const { shieldId, metadata } = request.body;
-
-  if (!shieldId || !metadata) {
-    return reply.code(400).send({
-      error: 'Missing required fields: shieldId, metadata'
-    });
-  }
-
   const result = await shieldService.verifyShield(shieldId, metadata);
   return result;
 });
 
 // --- Transfer ---
 
-app.post('/api/v1/transfer', async (request, reply) => {
-  const { shieldId, newOwner } = request.body;
+app.post('/api/v1/transfer', {
+  preHandler: requireApiKey,
+  schema: {
+    body: {
+      type: 'object',
+      required: ['shieldId', 'newOwner', 'currentOwner'],
+      properties: {
+        shieldId: { type: 'string', minLength: 1, maxLength: 200 },
+        newOwner: { type: 'string', minLength: 1, maxLength: 200 },
+        currentOwner: { type: 'string', minLength: 1, maxLength: 200 },
+      },
+      additionalProperties: false,
+    },
+  },
+}, async (request, reply) => {
+  const { shieldId, newOwner, currentOwner } = request.body;
 
-  if (!shieldId || !newOwner) {
-    return reply.code(400).send({
-      error: 'Missing required fields: shieldId, newOwner'
-    });
+  // IDOR check: verify requester owns this shield
+  const shield = shieldService.getShieldStatus(shieldId);
+  if (!shield) {
+    return reply.code(404).send({ error: 'Shield not found' });
+  }
+  if (shield.owner !== currentOwner) {
+    return reply.code(403).send({ error: 'Forbidden: you do not own this shield' });
   }
 
   const result = await shieldService.transferShield(shieldId, newOwner);
@@ -149,7 +203,9 @@ app.get('/api/v1/migration/readiness', async () => {
   return shieldService.agility.getReadinessAssessment();
 });
 
-app.post('/api/v1/migration/advance', async (request, reply) => {
+app.post('/api/v1/migration/advance', {
+  preHandler: requireApiKey,
+}, async (request, reply) => {
   const result = shieldService.advanceMigration();
   return result;
 });
@@ -158,6 +214,26 @@ app.post('/api/v1/migration/advance', async (request, reply) => {
 
 app.get('/api/v1/stats', async () => {
   return shieldService.getStats();
+});
+
+// --- Error Handler ---
+
+app.setErrorHandler((error, _request, reply) => {
+  app.log.error(error);
+
+  if (error.validation) {
+    return reply.code(400).send({
+      error: 'Validation Error',
+      message: error.message,
+    });
+  }
+
+  return reply.code(500).send({
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'production'
+      ? 'An unexpected error occurred'
+      : error.message,
+  });
 });
 
 // --- Start Server ---

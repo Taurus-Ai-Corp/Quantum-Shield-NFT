@@ -10,6 +10,9 @@
  */
 
 import type { HIP412Metadata } from '../validators/HIP412Validator.js';
+import { createLogger } from '../lib/logger.js';
+
+const log = createLogger('IPFSService');
 
 /**
  * IPFS upload result
@@ -37,6 +40,22 @@ export interface IPFSServiceConfig {
 /**
  * IPFS Service for NFT metadata storage
  */
+// Allowed IPFS gateways — prevents SSRF via gateway manipulation
+const ALLOWED_GATEWAYS = [
+  'https://ipfs.io/ipfs/',
+  'https://cloudflare-ipfs.com/ipfs/',
+  'https://gateway.pinata.cloud/ipfs/',
+] as const;
+
+// CIDv0: Qm + 44 base58 chars | CIDv1: bafy + base32 chars
+const CID_PATTERN = /^(Qm[1-9A-HJ-NP-Za-km-z]{44}|b[a-z2-7]{58,})$/;
+
+function validateCID(cid: string): void {
+  if (!CID_PATTERN.test(cid)) {
+    throw new Error(`Invalid IPFS CID format: ${cid.substring(0, 20)}`);
+  }
+}
+
 export class IPFSService {
   private config: Required<IPFSServiceConfig>;
   private uploadHistory: Map<string, IPFSUploadResult>;
@@ -55,15 +74,7 @@ export class IPFSService {
 
     this.validateConfiguration();
 
-    console.log(`
-╔═══════════════════════════════════════════════════════════════╗
-║                IPFS SERVICE INITIALIZED                       ║
-╠═══════════════════════════════════════════════════════════════╣
-║  Provider: ${this.config.provider.padEnd(53)} ║
-║  HIP-412 Compliant Storage                                   ║
-║  Permanent Decentralized Metadata                            ║
-╚═══════════════════════════════════════════════════════════════╝
-    `);
+    log.info(`Initialized with provider: ${this.config.provider}`);
   }
 
   /**
@@ -72,15 +83,11 @@ export class IPFSService {
   private validateConfiguration(): void {
     if (this.config.provider === 'pinata') {
       if (!this.config.pinataApiKey || !this.config.pinataSecretKey) {
-        console.warn(
-          '⚠️  Pinata API keys not configured. Set PINATA_API_KEY and PINATA_SECRET_KEY environment variables.'
-        );
+        log.warn('Pinata API keys not configured. Set PINATA_API_KEY and PINATA_SECRET_KEY environment variables.');
       }
     } else if (this.config.provider === 'nft-storage') {
       if (!this.config.nftStorageApiKey) {
-        console.warn(
-          '⚠️  NFT.Storage API key not configured. Set NFT_STORAGE_API_KEY environment variable.'
-        );
+        log.warn('NFT.Storage API key not configured. Set NFT_STORAGE_API_KEY environment variable.');
       }
     }
   }
@@ -95,7 +102,7 @@ export class IPFSService {
       pinToIPFS?: boolean;
     }
   ): Promise<IPFSUploadResult> {
-    console.log(`\n📤 Uploading metadata to IPFS (${this.config.provider})...`);
+    log.info(`Uploading metadata to IPFS (${this.config.provider})`);
 
     const metadataJSON = JSON.stringify(metadata, null, 2);
     const buffer = Buffer.from(metadataJSON, 'utf-8');
@@ -119,7 +126,7 @@ export class IPFSService {
     // Store in history
     this.uploadHistory.set(result.cid, result);
 
-    console.log(`✅ Metadata uploaded: ${result.cid}`);
+    log.info(`Metadata uploaded: ${result.cid}`);
 
     return result;
   }
@@ -273,14 +280,11 @@ export class IPFSService {
    * Retrieve metadata from IPFS by CID
    */
   async retrieveMetadata(cid: string): Promise<HIP412Metadata> {
-    console.log(`\n📥 Retrieving metadata from IPFS: ${cid}...`);
+    validateCID(cid);
+    log.info(`Retrieving metadata from IPFS: ${cid}`);
 
-    // Try multiple IPFS gateways for reliability
-    const gateways = [
-      `https://ipfs.io/ipfs/${cid}`,
-      `https://cloudflare-ipfs.com/ipfs/${cid}`,
-      `https://gateway.pinata.cloud/ipfs/${cid}`,
-    ];
+    // Use allowlisted gateways only
+    const gateways = ALLOWED_GATEWAYS.map((g) => `${g}${cid}`);
 
     for (const gateway of gateways) {
       try {
@@ -290,11 +294,11 @@ export class IPFSService {
 
         if (response.ok) {
           const metadata = (await response.json()) as HIP412Metadata;
-          console.log(`✅ Metadata retrieved from: ${gateway}`);
+          log.info(`Metadata retrieved from: ${gateway}`);
           return metadata;
         }
       } catch (error) {
-        console.warn(`Failed to retrieve from ${gateway}:`, (error as Error).message);
+        log.warn(`Failed to retrieve from ${gateway}: ${(error as Error).message}`);
         continue;
       }
     }
@@ -306,8 +310,9 @@ export class IPFSService {
    * Pin existing CID (makes it permanent)
    */
   async pinCID(cid: string): Promise<void> {
+    validateCID(cid);
     if (this.config.provider !== 'pinata') {
-      console.warn('Pinning only supported with Pinata provider');
+      log.warn('Pinning only supported with Pinata provider');
       return;
     }
 
@@ -335,7 +340,7 @@ export class IPFSService {
       throw new Error(`Pinata pinning failed: ${error}`);
     }
 
-    console.log(`📌 Pinned to Pinata: ${cid}`);
+    log.info(`Pinned to Pinata: ${cid}`);
   }
 
   /**
