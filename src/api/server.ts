@@ -64,7 +64,7 @@ export async function createServer(config: ServerConfig = {}) {
   const allowedOrigins: (string | RegExp)[] = [
     'https://shield.q-grid.ca',
     'https://quantum-shield-nft.vercel.app',
-    /\.vercel\.app$/,
+    /^https:\/\/quantum-shield-nft[a-z0-9-]*\.vercel\.app$/,
   ];
   if (process.env['NODE_ENV'] !== 'production') {
     allowedOrigins.push('http://localhost:3000', 'http://localhost:3100');

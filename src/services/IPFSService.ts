@@ -48,7 +48,7 @@ const ALLOWED_GATEWAYS = [
 ] as const;
 
 // CIDv0: Qm + 44 base58 chars | CIDv1: bafy + base32 chars
-const CID_PATTERN = /^(Qm[1-9A-HJ-NP-Za-km-z]{44}|b[a-z2-7]{58,})$/;
+const CID_PATTERN = /^(Qm[1-9A-HJ-NP-Za-km-z]{44}|b[a-z2-7]{58,100})$/;
 
 function validateCID(cid: string): void {
   if (!CID_PATTERN.test(cid)) {

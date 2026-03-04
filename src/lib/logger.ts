@@ -20,7 +20,9 @@ const LEVEL_PRIORITY: Record<LogLevel, number> = {
 
 const isProduction = process.env['NODE_ENV'] === 'production';
 
-const configuredLevel = (process.env['LOG_LEVEL'] as LogLevel) || (isProduction ? 'warn' : 'info');
+const VALID_LEVELS: LogLevel[] = ['debug', 'info', 'warn', 'error', 'silent'];
+const rawLevel = process.env['LOG_LEVEL'] as LogLevel;
+const configuredLevel: LogLevel = VALID_LEVELS.includes(rawLevel) ? rawLevel : (isProduction ? 'warn' : 'info');
 
 function shouldLog(level: LogLevel): boolean {
   return LEVEL_PRIORITY[level] >= LEVEL_PRIORITY[configuredLevel];

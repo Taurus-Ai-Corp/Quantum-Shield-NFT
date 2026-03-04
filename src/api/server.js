@@ -7,6 +7,7 @@
  * @copyright TAURUS AI Corp
  */
 
+import { timingSafeEqual } from 'node:crypto';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
@@ -32,7 +33,7 @@ const app = Fastify({
 const ALLOWED_ORIGINS = [
   'https://shield.q-grid.ca',
   'https://quantum-shield-nft.vercel.app',
-  /\.vercel\.app$/,
+  /^https:\/\/quantum-shield-nft[a-z0-9-]*\.vercel\.app$/,
 ];
 
 if (process.env.NODE_ENV !== 'production') {
@@ -70,6 +71,12 @@ app.get('/health', async () => ({
 
 const API_KEY = process.env.SHIELD_API_KEY;
 
+function safeCompare(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
+}
+
 function requireApiKey(request, reply, done) {
   if (!API_KEY) {
     // No API key configured — skip auth in development
@@ -82,7 +89,7 @@ function requireApiKey(request, reply, done) {
   }
 
   const provided = request.headers['x-api-key'] || request.headers['authorization']?.replace('Bearer ', '');
-  if (provided !== API_KEY) {
+  if (!provided || !safeCompare(provided, API_KEY)) {
     reply.code(401).send({ error: 'Unauthorized: invalid or missing API key' });
     return;
   }
@@ -116,7 +123,7 @@ app.post('/api/v1/shield', {
   return reply.code(201).send(result);
 });
 
-app.get('/api/v1/shield/:shieldId', async (request, reply) => {
+app.get('/api/v1/shield/:shieldId', { preHandler: requireApiKey }, async (request, reply) => {
   const { shieldId } = request.params;
   const status = shieldService.getShieldStatus(shieldId);
 
@@ -195,11 +202,11 @@ app.get('/api/v1/provenance/:assetId', async (request, reply) => {
 
 // --- Migration Management ---
 
-app.get('/api/v1/migration/status', async () => {
+app.get('/api/v1/migration/status', { preHandler: requireApiKey }, async () => {
   return shieldService.getComplianceReport();
 });
 
-app.get('/api/v1/migration/readiness', async () => {
+app.get('/api/v1/migration/readiness', { preHandler: requireApiKey }, async () => {
   return shieldService.agility.getReadinessAssessment();
 });
 
@@ -212,7 +219,7 @@ app.post('/api/v1/migration/advance', {
 
 // --- Stats ---
 
-app.get('/api/v1/stats', async () => {
+app.get('/api/v1/stats', { preHandler: requireApiKey }, async () => {
   return shieldService.getStats();
 });
 
