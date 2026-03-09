@@ -63,7 +63,7 @@
     "@noble/post-quantum": "^0.2.0",
     "@pinecone-database/pinecone": "^7.1.0",
     "dotenv": "^16.4.7",
-    "fastify": "^5.2.0",
+    "fastify": "^5.8.2",
     "uuid": "^11.1.0",
     "zod": "^3.24.0"
   },
