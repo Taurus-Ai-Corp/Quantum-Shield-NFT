@@ -17,7 +17,16 @@ export async function POST(req: Request) {
     );
   }
 
-  const body = await req.json();
+  const raw = await req.json();
+  const body = {
+    assetId: raw.assetId,
+    assetType: raw.assetType,
+    name: raw.name,
+    description: raw.description,
+    metadata: raw.metadata,
+    owner: session.user.id,
+    category: raw.category,
+  };
 
   try {
     const controller = new AbortController();

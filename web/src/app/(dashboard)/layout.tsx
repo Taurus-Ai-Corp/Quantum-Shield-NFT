@@ -31,7 +31,10 @@ export default function DashboardLayout({
             <nav className="ml-auto flex items-center gap-4">
               <WalletConnect />
               <UserNav />
-              <button className="inline-flex items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9">
+              <button
+                aria-label="Settings"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9"
+              >
                 <Settings className="w-4 h-4" />
               </button>
             </nav>
