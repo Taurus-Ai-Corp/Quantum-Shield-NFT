@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const API_URL = process.env.SHIELD_API_URL || 'http://localhost:3200';
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -18,7 +20,7 @@ const nextConfig = {
     return [
       {
         source: '/api/v1/:path*',
-        destination: 'http://localhost:3200/api/v1/:path*',
+        destination: `${API_URL}/api/v1/:path*`,
       },
     ];
   },

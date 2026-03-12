@@ -152,13 +152,16 @@ export default function LandingPage() {
               © 2026 Quantum-Shield NFT. NIST FIPS 203/204 Compliant.
             </p>
             <div className="flex gap-6 text-sm">
+              <Link href="/privacy" className="text-muted-foreground hover:text-foreground">
+                Privacy
+              </Link>
+              <Link href="/terms" className="text-muted-foreground hover:text-foreground">
+                Terms
+              </Link>
               <Link href="/docs" className="text-muted-foreground hover:text-foreground">
                 Documentation
               </Link>
-              <Link href="/compliance" className="text-muted-foreground hover:text-foreground">
-                Compliance
-              </Link>
-              <Link href="https://github.com" className="text-muted-foreground hover:text-foreground">
+              <Link href="https://github.com/Taurus-Ai-Corp/Quantum-Shield-NFT" className="text-muted-foreground hover:text-foreground">
                 GitHub
               </Link>
             </div>

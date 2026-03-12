@@ -15,6 +15,10 @@
 /**
  * Mirror Node network configuration
  */
+import { createLogger } from '../lib/logger.js';
+
+const log = createLogger('MirrorNodeService');
+
 export type MirrorNodeNetwork = 'mainnet' | 'testnet' | 'previewnet';
 
 /**
@@ -105,15 +109,7 @@ export class MirrorNodeService {
   constructor(network: MirrorNodeNetwork = 'testnet') {
     this.baseUrl = MIRROR_NODE_ENDPOINTS[network];
 
-    console.log(`
-╔═══════════════════════════════════════════════════════════════╗
-║          MIRROR NODE SERVICE INITIALIZED                     ║
-╠═══════════════════════════════════════════════════════════════╣
-║  Network: ${network.padEnd(54)} ║
-║  Endpoint: ${this.baseUrl.padEnd(52)} ║
-║  Query Capabilities: Tokens, NFTs, Topics, Transactions      ║
-╚═══════════════════════════════════════════════════════════════╝
-    `);
+    log.info(`Initialized for network: ${network}`);
   }
 
   /**
@@ -132,7 +128,7 @@ export class MirrorNodeService {
 
       return (await response.json()) as T;
     } catch (error) {
-      console.error(`Mirror Node request failed: ${url}`, error);
+      log.error(`Mirror Node request failed: ${url}`, error);
       throw error;
     }
   }
@@ -210,7 +206,7 @@ export class MirrorNodeService {
             data: JSON.parse(decoded),
           };
         } catch (error) {
-          console.warn('Failed to decode message:', error);
+          log.warn(`Failed to decode message: ${(error as Error).message}`);
           return null;
         }
       })
@@ -231,7 +227,7 @@ export class MirrorNodeService {
       const decoded = Buffer.from(nft.metadata, 'base64').toString('utf-8');
       return JSON.parse(decoded);
     } catch (error) {
-      console.warn('Failed to decode NFT metadata:', error);
+      log.warn(`Failed to decode NFT metadata: ${(error as Error).message}`);
       return { raw: nft.metadata };
     }
   }

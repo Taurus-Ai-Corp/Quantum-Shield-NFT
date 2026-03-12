@@ -74,68 +74,153 @@ web/src/
 
 ---
 
-## Styling System
+## Styling System — TAURUS AI Brand (Dark-First)
 
-### Tailwind CSS + shadcn/ui
+### Core Principles
 
-- **IMPORTANT:** Use Tailwind utility classes exclusively - no inline styles
-- **IMPORTANT:** Never hardcode colors - use design tokens (CSS variables)
-- Design system: shadcn/ui primitives + Quantum-Shield branding
-- Dark mode: Enabled via `class` strategy in `tailwind.config.ts`
+- **IMPORTANT:** Dark-first design. `:root` = dark (#0A0A0A background). Light mode is opt-in via `.light` class.
+- **IMPORTANT:** Use Tailwind utility classes exclusively — no inline styles
+- **IMPORTANT:** Never hardcode hex colors — always use CSS variable tokens or `brand.*` Tailwind classes
+- **IMPORTANT:** Primary = Purple (#9333EA), Secondary = Cyan (#22D3EE). Never swap these.
+- Design system: shadcn/ui primitives + TAURUS AI brand palette
+- Dark mode: `class` strategy in `tailwind.config.ts`
 
-### Design Tokens
+### Design Tokens (Dark-First)
 
-**Colors** (HSL-based CSS variables in `globals.css`):
+**CSS Variables** (HSL values in `globals.css` `:root`):
 ```css
---background: hsl(0, 0%, 100%);
---foreground: hsl(222.2, 84%, 4.9%);
---primary: hsl(222.2, 47.4%, 11.2%);
---primary-foreground: hsl(210, 40%, 98%);
---secondary: hsl(210, 40%, 96.1%);
---secondary-foreground: hsl(222.2, 47.4%, 11.2%);
---muted: hsl(210, 40%, 96.1%);
---muted-foreground: hsl(215.4, 16.3%, 46.9%);
---accent: hsl(210, 40%, 96.1%);
---accent-foreground: hsl(222.2, 47.4%, 11.2%);
---destructive: hsl(0, 84.2%, 60.2%);
---destructive-foreground: hsl(210, 40%, 98%);
---border: hsl(214.3, 31.8%, 91.4%);
---input: hsl(214.3, 31.8%, 91.4%);
---ring: hsl(222.2, 84%, 4.9%);
---card: hsl(0, 0%, 100%);
---card-foreground: hsl(222.2, 84%, 4.9%);
---popover: hsl(0, 0%, 100%);
---popover-foreground: hsl(222.2, 84%, 4.9%);
+/* Background: Near-black */
+--background: 0 0% 4%;        /* #0A0A0A */
+--foreground: 0 0% 100%;      /* #FFFFFF */
+
+/* Surface */
+--card: 0 0% 9%;              /* #171717 */
+--card-foreground: 0 0% 100%;
+
+/* Primary — Purple */
+--primary: 271 91% 56%;       /* #9333EA */
+--primary-foreground: 0 0% 100%;
+
+/* Secondary — Cyan */
+--secondary: 187 94% 43%;     /* #06B6D4 */
+--secondary-foreground: 0 0% 100%;
+
+/* Muted */
+--muted: 0 0% 15%;            /* #262626 */
+--muted-foreground: 0 0% 64%; /* #A3A3A3 */
+
+/* Accent — Cyan-400 */
+--accent: 187 92% 54%;        /* #22D3EE */
+
+/* Borders */
+--border: 0 0% 25%;           /* #404040 */
+--ring: 271 91% 56%;          /* Purple focus ring */
 ```
 
-**Usage:**
-```tsx
-// ✅ Correct
-<div className="bg-primary text-primary-foreground" />
+### Brand Color Palette (Tailwind)
 
-// ❌ Wrong
-<div style={{ backgroundColor: '#1c1e26' }} />
+```tsx
+// Direct brand colors (use for brand-specific elements)
+className="bg-brand-purple-500"    // #9333EA — Primary purple
+className="text-brand-purple-400"  // #C084FC — Light purple (headings)
+className="text-brand-cyan-400"    // #22D3EE — Cyan accent
+className="bg-brand-purple-900"    // #3B0764 — Deep purple (CTA bg)
+
+// shadcn/ui semantic tokens (use for standard UI)
+className="bg-primary"             // Maps to purple via CSS var
+className="bg-card"                // Maps to #171717 surface
+className="text-muted-foreground"  // Maps to #A3A3A3
+className="bg-background"          // Maps to #0A0A0A
 ```
 
-**Spacing:**
-- Use Tailwind's default spacing scale (4px base)
-- Custom spacing in `tailwind.config.ts` if needed
-- **IMPORTANT:** Never hardcode pixel values in className strings
+### Brand Utilities (CSS classes)
 
-**Typography:**
-- Use Tailwind typography utilities: `text-sm`, `text-base`, `text-lg`, etc.
-- Font weights: `font-normal`, `font-medium`, `font-semibold`, `font-bold`
-- Line heights: `leading-tight`, `leading-normal`, `leading-relaxed`
-
-**Border Radius:**
 ```tsx
-// From tailwind.config.ts
---radius: 0.5rem;  // Default border radius
+// Gradient text (purple → cyan)
+className="text-gradient-brand"
 
-// Usage:
-rounded-lg  // var(--radius)
-rounded-md  // calc(var(--radius) - 2px)
-rounded-sm  // calc(var(--radius) - 4px)
+// Glow effects
+className="shadow-glow-purple-sm"  // Subtle purple glow
+className="shadow-glow-purple-md"  // Medium purple glow
+className="shadow-glow-cyan-sm"    // Subtle cyan glow
+className="shadow-glow-brand"      // Purple + cyan dual glow
+
+// Text glow
+className="text-glow-purple"       // Purple text with glow shadow
+className="text-glow-cyan"         // Cyan text with glow shadow
+
+// Component classes
+className="card-circuit"           // Gradient border card (purple → cyan)
+className="card-glass"             // Glassmorphism card (backdrop-blur)
+className="glass"                  // Generic glassmorphism utility
+```
+
+### Typography
+
+| Purpose | Font Family | Tailwind Class |
+|---------|-------------|----------------|
+| Body text | Inter | `font-sans` |
+| Headings, display | Space Grotesk | `font-display` |
+| Code, metrics, monospace | JetBrains Mono | `font-mono` |
+
+```tsx
+// ✅ Headings use display font
+<h1 className="font-display text-5xl font-extrabold">Shield Your NFTs</h1>
+
+// ✅ Metrics use monospace
+<p className="font-mono text-2xl text-brand-cyan-400">$0.0001</p>
+
+// ✅ Body text uses sans (default)
+<p className="text-muted-foreground">Description text</p>
+```
+
+### Spacing & Radius
+
+- Use Tailwind's default 4px spacing scale
+- `--radius: 0.5rem` base → `rounded-lg`, `rounded-md`, `rounded-sm`
+- **IMPORTANT:** Never hardcode pixel values
+
+### Animations (Tailwind)
+
+```tsx
+className="animate-circuit-glow"    // Pulsing purple/cyan glow
+className="animate-node-pulse"      // Scale + glow pulse
+className="animate-fade-in-up"      // Fade in from bottom
+className="animate-fade-in-scale"   // Fade in with scale
+className="animate-shimmer"         // Loading shimmer
+```
+
+### Semantic Colors
+
+| Token | Color | Usage |
+|-------|-------|-------|
+| `semantic-success` | #10B981 | Valid signatures, completed states |
+| `semantic-warning` | #F59E0B | Pending migrations, alerts |
+| `semantic-error` | #EF4444 | Failed verifications, errors |
+| `semantic-info` | #3B82F6 | Informational states |
+
+### Common Patterns
+
+```tsx
+// ✅ Glassmorphism nav
+<nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+
+// ✅ Feature card with purple glow hover
+<Card className="border-border/50 transition-all hover:-translate-y-1 hover:border-brand-purple-500/50 hover:shadow-glow-purple-sm">
+
+// ✅ CTA button with glow
+<Button size="lg" className="shadow-glow-purple-sm">
+
+// ✅ Circuit border card (compliance sections)
+<div className="card-circuit">
+
+// ✅ Badge with brand border
+<Badge variant="outline" className="border-brand-purple-500/50 text-brand-purple-400">
+
+// ❌ WRONG — light mode colors in dark-first app
+<article className="bg-white border rounded-lg">
+<span className="bg-blue-50 text-blue-700">
+<span className="bg-green-100 text-green-800">
 ```
 
 ---
@@ -439,21 +524,49 @@ import * as Icons from 'lucide-react';
 
 ---
 
-## Quantum-Safe Branding
+## Quantum-Shield Branding & Visual Identity
 
-### Visual Identity
+### TAURUS AI Brand System
 
-- **Primary color:** Deep blue (#1c1e26) with quantum glow accents
-- **Accent colors:** Electric blue (#00b4d8), purple (#7209b7)
-- **Typography:** Modern sans-serif, technical aesthetic
-- **Icons:** Shield motifs, quantum wave patterns
+| Element | Value | Tailwind Token |
+|---------|-------|----------------|
+| **Primary** | Purple #9333EA | `brand-purple-500` / `primary` |
+| **Secondary** | Cyan #22D3EE | `brand-cyan-400` / `accent` |
+| **Background** | Near-black #0A0A0A | `background` / `neutral-950` |
+| **Surface** | Dark gray #171717 | `card` / `neutral-900` |
+| **Border** | Gray #404040 | `border` / `neutral-700` |
+| **Text** | White #FFFFFF | `foreground` / `neutral-0` |
+| **Muted text** | Gray #A3A3A3 | `muted-foreground` / `neutral-400` |
+
+### Design Philosophy: Lattice Governance
+
+> "The invisible determines the permissible"
+
+- **Grid structures**: Triangulated tessellations, dot grids, neural lattice patterns
+- **Typography**: Clinical, institutional — Space Grotesk for authority, JetBrains Mono for precision
+- **Aesthetic**: Dark, austere, technical. Purple glow = quantum energy. Cyan = blockchain connectivity.
+- **Animation**: Neural synapse-style electric pulses traversing grid lines (canvas-based)
+- **Cards**: Circuit gradient borders (purple→cyan), glassmorphism surfaces
+
+### Visual Patterns
+
+| Pattern | Implementation | When to Use |
+|---------|---------------|-------------|
+| Glassmorphism | `bg-background/80 backdrop-blur-xl` | Nav, overlays, modals |
+| Circuit border | `.card-circuit` class | Compliance, enterprise sections |
+| Purple glow hover | `hover:shadow-glow-purple-sm hover:border-brand-purple-500/50` | Cards, interactive elements |
+| Gradient text | `.text-gradient-brand` (purple→cyan) | Hero headings, emphasis |
+| Monospace metrics | `font-mono text-brand-cyan-400` | Stats, numbers, IDs |
+| Radial glow bg | `radial-gradient(ellipse at top, rgba(147,51,234,0.15)...)` | Hero sections |
 
 ### Terminology
 
-- Use "Quantum-Safe" or "Post-Quantum" (not "Quantum-Resistant")
-- ML-DSA-65 (signing), ML-KEM-768 (key exchange)
-- "Shield" terminology (not "protect" or "secure")
-- Hedera HTS/HCS (blockchain layer)
+- **IMPORTANT:** Use "Quantum-Safe" or "Post-Quantum" (never "Quantum-Resistant")
+- **IMPORTANT:** ML-DSA-65 (signing), ML-KEM-768 (key exchange) — always include level
+- **IMPORTANT:** "Shield" terminology (not "protect" or "secure") — it's the brand verb
+- Hedera HTS (tokens), HCS (consensus/provenance), HSCS (smart contracts)
+- FIPS 203 (ML-KEM standard), FIPS 204 (ML-DSA standard)
+- CNSA 2.0 (Jan 2027 deadline), EU AI Act (Aug 2026 deadline)
 
 ---
 
