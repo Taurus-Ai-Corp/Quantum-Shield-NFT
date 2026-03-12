@@ -20,10 +20,7 @@ declare module 'fastify' {
 /**
  * Internal auth: Next.js -> Fastify via shared service token
  */
-export async function requireServiceAuth(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function requireServiceAuth(request: FastifyRequest, reply: FastifyReply) {
   const token = request.headers['x-service-token'] as string;
   const userId = request.headers['x-user-id'] as string;
 
@@ -42,10 +39,7 @@ export async function requireServiceAuth(
  * External auth: CLI/SDK -> Fastify via per-user API key
  * Note: Requires Prisma client - import lazily to avoid circular deps
  */
-export async function requireApiKey(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function requireApiKey(request: FastifyRequest, reply: FastifyReply) {
   const apiKey = request.headers['x-api-key'] as string;
 
   if (!apiKey) {
@@ -73,10 +67,7 @@ export async function requireApiKey(
 /**
  * Combined auth: accepts either service token OR API key
  */
-export async function requireAuth(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function requireAuth(request: FastifyRequest, reply: FastifyReply) {
   const serviceToken = request.headers['x-service-token'] as string;
 
   if (serviceToken) {

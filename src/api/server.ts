@@ -54,7 +54,10 @@ export async function createServer(config: ServerConfig = {}) {
 
   // Initialize services
   const shieldService = new NFTShieldService({
-    hederaNetwork: config.hederaNetwork || (process.env['HEDERA_NETWORK'] as ServerConfig['hederaNetwork']) || 'testnet',
+    hederaNetwork:
+      config.hederaNetwork ||
+      (process.env['HEDERA_NETWORK'] as ServerConfig['hederaNetwork']) ||
+      'testnet',
     operatorId: config.operatorId || process.env['HEDERA_OPERATOR_ID'],
     operatorKey: config.operatorKey || process.env['HEDERA_OPERATOR_KEY'],
     enableMarketplace: config.enableMarketplace !== false,
