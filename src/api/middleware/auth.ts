@@ -53,8 +53,10 @@ export async function requireApiKey(
   }
 
   // Dynamic import to avoid requiring Prisma at module load
-  // Path: src/api/middleware/ -> src/api/ -> src/ -> project root -> web/src/lib/prisma
-  const { prisma } = await import('../../../web/src/lib/prisma');
+  // Variable path prevents TypeScript from statically resolving the cross-boundary import
+  // (web/src/lib/prisma depends on @prisma/client which is only in web/node_modules)
+  const prismaPath = '../../../web/src/lib/prisma';
+  const { prisma } = await import(prismaPath);
 
   const user = await prisma.user.findUnique({
     where: { apiKey },

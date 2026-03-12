@@ -11,7 +11,7 @@
  * @compliance NIST FIPS 203/204, Hedera HTS/HCS standards
  */
 
-import Fastify from 'fastify';
+import Fastify, { type FastifyError } from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import { NFTShieldService } from '../services/NFTShieldService.js';
@@ -401,14 +401,14 @@ export async function createServer(config: ServerConfig = {}) {
   /**
    * Error handler
    */
-  fastify.setErrorHandler((error, _request, reply) => {
+  fastify.setErrorHandler((error: FastifyError, _request, reply) => {
     fastify.log.error(error);
 
-    if ('validation' in error) {
+    if (error.validation) {
       return reply.code(400).send({
         error: 'Validation Error',
         message: error.message,
-        details: (error as { validation: unknown }).validation,
+        details: error.validation,
       });
     }
 
