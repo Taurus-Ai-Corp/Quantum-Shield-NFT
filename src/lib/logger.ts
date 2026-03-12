@@ -28,26 +28,32 @@ function shouldLog(level: LogLevel): boolean {
   return LEVEL_PRIORITY[level] >= LEVEL_PRIORITY[configuredLevel];
 }
 
+function sanitize(input: string): string {
+  return input.replace(/[\r\n\x00-\x1f\x7f]/g, ' ');
+}
+
 function formatMessage(level: LogLevel, context: string, message: string, data?: unknown): void {
   if (!shouldLog(level)) return;
+
+  const safeMessage = sanitize(message);
 
   if (isProduction) {
     const entry: Record<string, unknown> = {
       level,
       service: 'quantum-shield-nft',
       context,
-      msg: message,
+      msg: safeMessage,
       timestamp: new Date().toISOString(),
     };
     if (data !== undefined) {
-      entry.data = data;
+      entry['data'] = data;
     }
     const output = level === 'error' ? console.error : console.log;
     output(JSON.stringify(entry));
   } else {
     const prefix = { debug: '🔍', info: 'ℹ️ ', warn: '⚠️ ', error: '❌', silent: '' }[level];
     const output = level === 'error' ? console.error : level === 'warn' ? console.warn : console.log;
-    output(`${prefix} [${context}] ${message}`);
+    output(`${prefix} [${context}] ${safeMessage}`);
     if (data !== undefined) {
       output(data);
     }

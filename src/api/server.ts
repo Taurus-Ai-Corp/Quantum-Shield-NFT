@@ -54,7 +54,7 @@ export async function createServer(config: ServerConfig = {}) {
 
   // Initialize services
   const shieldService = new NFTShieldService({
-    hederaNetwork: config.hederaNetwork || (process.env['HEDERA_NETWORK'] as any) || 'testnet',
+    hederaNetwork: config.hederaNetwork || (process.env['HEDERA_NETWORK'] as ServerConfig['hederaNetwork']) || 'testnet',
     operatorId: config.operatorId || process.env['HEDERA_OPERATOR_ID'],
     operatorKey: config.operatorKey || process.env['HEDERA_OPERATOR_KEY'],
     enableMarketplace: config.enableMarketplace !== false,
@@ -404,20 +404,18 @@ export async function createServer(config: ServerConfig = {}) {
   fastify.setErrorHandler((error, _request, reply) => {
     fastify.log.error(error);
 
-    const err = error as any;
-
-    if ('validation' in err) {
+    if ('validation' in error) {
       return reply.code(400).send({
         error: 'Validation Error',
-        message: err.message,
-        details: err.validation,
+        message: error.message,
+        details: (error as { validation: unknown }).validation,
       });
     }
 
     return reply.code(500).send({
       error: 'Internal Server Error',
       message:
-        process.env['NODE_ENV'] === 'production' ? 'An unexpected error occurred' : err.message,
+        process.env['NODE_ENV'] === 'production' ? 'An unexpected error occurred' : error.message,
     });
   });
 
