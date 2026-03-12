@@ -11,7 +11,7 @@
  * @compliance NIST FIPS 203/204, Hedera HTS/HCS standards
  */
 
-import Fastify from 'fastify';
+import Fastify, { type FastifyError } from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import { NFTShieldService } from '../services/NFTShieldService.js';
@@ -54,17 +54,29 @@ export async function createServer(config: ServerConfig = {}) {
 
   // Initialize services
   const shieldService = new NFTShieldService({
-    hederaNetwork: config.hederaNetwork || (process.env['HEDERA_NETWORK'] as any) || 'testnet',
+    hederaNetwork:
+      config.hederaNetwork ||
+      (process.env['HEDERA_NETWORK'] as ServerConfig['hederaNetwork']) ||
+      'testnet',
     operatorId: config.operatorId || process.env['HEDERA_OPERATOR_ID'],
     operatorKey: config.operatorKey || process.env['HEDERA_OPERATOR_KEY'],
     enableMarketplace: config.enableMarketplace !== false,
   });
 
   // Register CORS
+  const allowedOrigins: (string | RegExp)[] = [
+    'https://shield.q-grid.ca',
+    'https://quantum-shield-nft.vercel.app',
+    /^https:\/\/quantum-shield-nft[a-z0-9-]*\.vercel\.app$/,
+  ];
+  if (process.env['NODE_ENV'] !== 'production') {
+    allowedOrigins.push('http://localhost:3000', 'http://localhost:3100');
+  }
   await fastify.register(cors, {
-    origin: process.env['CORS_ORIGIN'] || '*',
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
+    credentials: true,
   });
 
   // Register rate limiting
@@ -392,23 +404,21 @@ export async function createServer(config: ServerConfig = {}) {
   /**
    * Error handler
    */
-  fastify.setErrorHandler((error, _request, reply) => {
+  fastify.setErrorHandler((error: FastifyError, _request, reply) => {
     fastify.log.error(error);
 
-    const err = error as any;
-
-    if ('validation' in err) {
+    if (error.validation) {
       return reply.code(400).send({
         error: 'Validation Error',
-        message: err.message,
-        details: err.validation,
+        message: error.message,
+        details: error.validation,
       });
     }
 
     return reply.code(500).send({
       error: 'Internal Server Error',
       message:
-        process.env['NODE_ENV'] === 'production' ? 'An unexpected error occurred' : err.message,
+        process.env['NODE_ENV'] === 'production' ? 'An unexpected error occurred' : error.message,
     });
   });
 

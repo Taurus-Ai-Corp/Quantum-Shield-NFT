@@ -12,6 +12,10 @@
  * @see https://docs.griddb.net/latest/webapi/webapi/
  */
 
+import { createLogger } from '../lib/logger.js';
+
+const log = createLogger('GridDBClient');
+
 export interface GridDBConfig {
   host: string; // https://griddb-cloud.q-grid.net/contract_id/griddb/v2/
   cluster: string;
@@ -65,16 +69,7 @@ export class GridDBClient {
     const credentials = Buffer.from(`${config.username}:${config.password}`).toString('base64');
     this.authHeader = `Basic ${credentials}`;
 
-    console.log(`
-╔═══════════════════════════════════════════════════════════════╗
-║          GRIDDB CLIENT INITIALIZED                           ║
-╠═══════════════════════════════════════════════════════════════╣
-║  Host: ${config.host.padEnd(54)} ║
-║  Cluster: ${config.cluster.padEnd(51)} ║
-║  Database: ${config.database.padEnd(50)} ║
-║  Storage: Persistent time-series + collections               ║
-╚═══════════════════════════════════════════════════════════════╝
-    `);
+    log.info('Initialized', { cluster: config.cluster, database: config.database });
   }
 
   /**
@@ -260,7 +255,7 @@ export class GridDBClient {
    * Initialize NFT Shield containers
    */
   async initializeShieldContainers(): Promise<void> {
-    console.log('\n📦 Initializing GridDB containers for NFT Shield...');
+    log.info('Initializing GridDB containers for NFT Shield');
 
     // Container 1: nft_shields (COLLECTION)
     const shieldsContainer: GridDBContainer = {
@@ -319,13 +314,13 @@ export class GridDBClient {
       const exists = await this.containerExists(container.container_name);
       if (!exists) {
         await this.createContainer(container);
-        console.log(`  ✅ Created container: ${container.container_name}`);
+        log.info(`Created container: ${container.container_name}`);
       } else {
-        console.log(`  ✓ Container exists: ${container.container_name}`);
+        log.debug(`Container exists: ${container.container_name}`);
       }
     }
 
-    console.log('✅ GridDB containers initialized\n');
+    log.info('GridDB containers initialized');
   }
 
   /**
@@ -336,7 +331,7 @@ export class GridDBClient {
       await this.request('GET', '/containers');
       return true;
     } catch (error) {
-      console.error('GridDB health check failed:', error);
+      log.error('GridDB health check failed', error);
       return false;
     }
   }
