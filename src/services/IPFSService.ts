@@ -83,11 +83,15 @@ export class IPFSService {
   private validateConfiguration(): void {
     if (this.config.provider === 'pinata') {
       if (!this.config.pinataApiKey || !this.config.pinataSecretKey) {
-        log.warn('Pinata API keys not configured. Set PINATA_API_KEY and PINATA_SECRET_KEY environment variables.');
+        log.warn(
+          'Pinata API keys not configured. Set PINATA_API_KEY and PINATA_SECRET_KEY environment variables.'
+        );
       }
     } else if (this.config.provider === 'nft-storage') {
       if (!this.config.nftStorageApiKey) {
-        log.warn('NFT.Storage API key not configured. Set NFT_STORAGE_API_KEY environment variable.');
+        log.warn(
+          'NFT.Storage API key not configured. Set NFT_STORAGE_API_KEY environment variable.'
+        );
       }
     }
   }
