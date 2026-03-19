@@ -12,7 +12,11 @@ yarn-error.log*
 # Build outputs
 dist/
 build/
+web/.next/
 *.log
+
+# Test reports
+playwright-report/
 
 # IDE
 .vscode/
