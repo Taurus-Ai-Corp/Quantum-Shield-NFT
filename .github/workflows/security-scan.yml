@@ -82,6 +82,7 @@ jobs:
         run: npm ci
       
       - name: Run Snyk test
+        if: steps.snyk-token.outputs.has_token == 'true'
         uses: snyk/actions/node@master
         continue-on-error: true
         env:
@@ -89,8 +90,20 @@ jobs:
         with:
           args: --severity-threshold=high --policy-path=.snyk
       
+      - name: Check Snyk token
+        id: snyk-token
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          if [ -z \"$SNYK_TOKEN\" ]; then
+            echo 'has_token=false' >> $GITHUB_OUTPUT
+            echo '::warning::SNYK_TOKEN not configured; skipping Snyk scan.'
+          else
+            echo 'has_token=true' >> $GITHUB_OUTPUT
+          fi
+
       - name: Run Snyk monitor
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.snyk-token.outputs.has_token == 'true'
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
